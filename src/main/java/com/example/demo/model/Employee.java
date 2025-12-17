@@ -1,18 +1,99 @@
 package com.example.demo.model;
+import java.sql.Timestamp;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import jakarta.persistence.*;
+
 @Entity
-public class Student {
+@Table(
+    name = "employee",
+    uniqueConstraints = {
+        @UniqueConstraint(columnNames = "email")
+    }
+)
+public class Employee {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;   // Primary key
-    private String fullname;
-    @Column(unique = true)
-    private String email;  // Unique column
+    private Long id;   // PK
+    private String fullName;
+    @Column(nullable = false, unique = true)
+    private String email;   // UNIQUE
     private String department;
     private String jobTitle;
-    private Boolean active;
-    private Timestamp createdAt;
-    private Timestamp updatedAt;
+    private Boolean active = true;
+    @CreationTimestamp
+    @Column(updatable = false)
+    private Timestamp createdAt;   // auto on create
+    @UpdateTimestamp
+    private Timestamp updatedAt;   // auto on update
 
+    public Long getId() {
+    return id;
 }
+
+public void setId(Long id) {
+    this.id = id;
+}
+
+public String getFullName() {
+    return fullName;
+}
+
+public void setFullName(String fullName) {
+    this.fullName = fullName;
+}
+
+public String getEmail() {
+    return email;
+}
+
+public void setEmail(String email) {
+    this.email = email;
+}
+
+public String getDepartment() {
+    return department;
+}
+
+public void setDepartment(String department) {
+    this.department = department;
+}
+
+public String getJobTitle() {
+    return jobTitle;
+}
+
+public void setJobTitle(String jobTitle) {
+    this.jobTitle = jobTitle;
+}
+
+public Boolean getActive() {
+    return active;
+}
+
+public void setActive(Boolean active) {
+    this.active = active;
+}
+
+public Timestamp getCreatedAt() {
+    return createdAt;
+}
+
+public void setCreatedAt(Timestamp createdAt) {
+    this.createdAt = createdAt;
+}
+
+public Timestamp getUpdatedAt() {
+    return updatedAt;
+}
+
+public void setUpdatedAt(Timestamp updatedAt) {
+    this.updatedAt = updatedAt;
+}
+
+public Employee()
+}
+
