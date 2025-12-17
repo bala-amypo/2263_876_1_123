@@ -94,6 +94,16 @@ public void setUpdatedAt(Timestamp updatedAt) {
     this.updatedAt = updatedAt;
 }
 
-public Employee()
+public Employee(String fullName, String email, String department,
+                String jobTitle, Boolean active) {
+    this.fullName = fullName;
+    this.email = email;
+    this.department = department;
+    this.jobTitle = jobTitle;
+    this.active = active;
+}
+public Employee(){
+
+}
 }
 
