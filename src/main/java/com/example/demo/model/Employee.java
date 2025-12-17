@@ -7,30 +7,30 @@ import org.hibernate.annotations.UpdateTimestamp;
 import jakarta.persistence.*;
 
 @Entity
-@Table(
-    name = "employee",
-    uniqueConstraints = {
-        @UniqueConstraint(columnNames = "email")
-    }
-)
 public class Employee {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;   // PK
+    private Long id;
+
     private String fullName;
+
     @Column(nullable = false, unique = true)
     private String email;   // UNIQUE
-    private String department;
-    private String jobTitle;
-    private Boolean active = true;
-    @CreationTimestamp
-    @Column(updatable = false)
-    private Timestamp createdAt;   // auto on create
-    @UpdateTimestamp
-    private Timestamp updatedAt;   // auto on update
 
-    public Long getId() {
+    private String department;
+
+    private String jobTitle;
+
+    private Boolean active = true;
+
+    @CreationTimestamp
+    private Timestamp createdAt;
+
+    @UpdateTimestamp
+    private Timestamp updatedAt;
+
+ public Long getId() {
     return id;
 }
 
