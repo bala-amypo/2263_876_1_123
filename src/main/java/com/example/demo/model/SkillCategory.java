@@ -4,7 +4,7 @@ package com.example.demo.model;
 import jakarta.persistence.*;
 
 @Entity
-public class Skill {
+public class SkillCategory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -12,7 +12,7 @@ public class Skill {
     @Column(unique=true)
     private String categoryName;
     private String description;
-    private Boolean active = true;
+    private Boolean active;
  public Long getId() {
     return id;
 }
@@ -23,11 +23,11 @@ public void setId(Long id) {
 
 
 public String getCategoryName() {
-    return category;
+    return categoryName;
 }
 
-public void setCategory(String category) {
-    this.category = category;
+public void setCategoryName(String categoryName) {
+    this.categoryName = categoryName;
 }
 
 public String getDescription() {
@@ -45,14 +45,14 @@ public Boolean getActive() {
 public void setActive(Boolean active) {
     this.active = active;
 }
-public Skill(String name, String category,
+public SkillCategory(String categoryName,
                 String description, Boolean active) {
-    this.name = name;
-    this.category = category;
+
+    this.categoryName = categoryName;
     this.description = description;
     this.active = active;
 }
-public Skill(){
+public SkillCategory(){
 
 }
 }
