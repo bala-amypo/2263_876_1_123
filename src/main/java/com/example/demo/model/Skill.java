@@ -22,36 +22,28 @@ public void setId(Long id) {
     this.id = id;
 }
 
-public String getFullName() {
-    return fullName;
+public String getName() {
+    return name;
 }
 
-public void setFullName(String fullName) {
-    this.fullName = fullName;
+public void setName(String name) {
+    this.name = name;
 }
 
-public String getEmail() {
-    return email;
+public String getCategory() {
+    return category;
 }
 
-public void setEmail(String email) {
-    this.email = email;
+public void setCategory(String category) {
+    this.category = category;
 }
 
-public String getDepartment() {
-    return department;
+public String getDescription() {
+    return description;
 }
 
-public void setDepartment(String department) {
-    this.department = department;
-}
-
-public String getJobTitle() {
-    return jobTitle;
-}
-
-public void setJobTitle(String jobTitle) {
-    this.jobTitle = jobTitle;
+public void setDescription(String description) {
+    this.description = description;
 }
 
 public Boolean getActive() {
@@ -61,29 +53,12 @@ public Boolean getActive() {
 public void setActive(Boolean active) {
     this.active = active;
 }
-
-public Timestamp getCreatedAt() {
-    return createdAt;
-}
-
-public void setCreatedAt(Timestamp createdAt) {
-    this.createdAt = createdAt;
-}
-
-public Timestamp getUpdatedAt() {
-    return updatedAt;
-}
-
-public void setUpdatedAt(Timestamp updatedAt) {
-    this.updatedAt = updatedAt;
-}
-
-public Employee(String fullName, String email, String department,
-                String jobTitle, Boolean active) {
+public Employee(String name, String category,
+                String description, Boolean active) {
     this.fullName = fullName;
     this.email = email;
     this.department = department;
-    this.jobTitle = jobTitle;
+    this.description = description;
     this.active = active;
 }
 public Employee(){
