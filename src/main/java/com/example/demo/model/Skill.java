@@ -53,15 +53,14 @@ public Boolean getActive() {
 public void setActive(Boolean active) {
     this.active = active;
 }
-public Employee(String name, String category,
+public Skill(String name, String category,
                 String description, Boolean active) {
-    this.fullName = fullName;
-    this.email = email;
-    this.department = department;
+    this.name = name;
+    this.category = category;
     this.description = description;
     this.active = active;
 }
-public Employee(){
+public Skill(){
 
 }
 }
