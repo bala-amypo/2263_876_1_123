@@ -14,6 +14,4 @@ public interface SearchQueryService {
     SearchQueryRecord getQueryById(Long id);
 
     List<SearchQueryRecord> getQueriesForUser(Long userId);
-    List<Employee> employees = employeeSkillRepo.findEmployeesByAllSkillNames(skills);
-
 }
