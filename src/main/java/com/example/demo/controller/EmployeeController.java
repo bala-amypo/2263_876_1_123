@@ -11,9 +11,9 @@ import com.example.demo.service.EmployeeService;
 @RequestMapping("/api/employees")
 public class EmployeeController {
 
-    @Autowired
-    EmployeeService ser;
-
+   
+   public EmployeeService ser;
+   public 
     @PostMapping("/")
     public Employee createEmployee(@RequestBody Employee emp) {
         return ser.createEmployee(emp);
