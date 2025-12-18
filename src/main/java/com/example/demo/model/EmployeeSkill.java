@@ -15,14 +15,22 @@ public class EmployeeSkill {
     @ManyToOne
     private Skill skill;
 
-   
+    public enum ProficiencyLevel {
+        Beginner,
+        Intermediate,
+        Advanced,
+        Expert
+    }
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private ProficiencyLevel proficiencyLevel;
 
     @Column(nullable = false)
     private Integer yearsOfExperience;
 
     private Boolean active = true;
-
-    public Long getId() {
+public Long getId() {
     return id;
 }
 
@@ -46,7 +54,13 @@ public void setSkill(Skill skill) {
     this.skill = skill;
 }
 
+public ProficiencyLevel getProficiencyLevel() {
+    return proficiencyLevel;
+}
 
+public void setProficiencyLevel(ProficiencyLevel proficiencyLevel) {
+    this.proficiencyLevel = proficiencyLevel;
+}
 
 public Integer getYearsOfExperience() {
     return yearsOfExperience;
@@ -70,9 +84,11 @@ public void setActive(Boolean active) {
 
     // Parameterized constructor
     public EmployeeSkill(Employee employee, Skill skill,
+                         ProficiencyLevel proficiencyLevel,
                          Integer yearsOfExperience, Boolean active) {
         this.employee = employee;
         this.skill = skill;
+        this.proficiencyLevel = proficiencyLevel;
         this.yearsOfExperience = yearsOfExperience;
         this.active = active;
     }
