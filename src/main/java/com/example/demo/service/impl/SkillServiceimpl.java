@@ -32,7 +32,7 @@ public class SkillServiceimpl implements SkillService {
     }
 
     @Override
-    public void deleteSkill(Long id) {
+    public void deactivateSkill(Long id) {
         repo.deleteById(id);
     }
 }
