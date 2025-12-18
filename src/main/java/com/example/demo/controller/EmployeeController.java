@@ -13,7 +13,9 @@ public class EmployeeController {
 
    
    public EmployeeService ser;
-   public 
+   public EmployeeController(EmployeeService ser){
+    this.ser=ser;
+   }
     @PostMapping("/")
     public Employee createEmployee(@RequestBody Employee emp) {
         return ser.createEmployee(emp);
