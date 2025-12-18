@@ -25,7 +25,7 @@ public class EmployeeServiceimpl implements EmployeeService {
     }
 
     @Override
-    public Optional<Employee> getEmployeeById(int id) {
+    public Optional<Employee> getEmployeeById(Long id) {
         return repo.findById(id);
     }
 }
