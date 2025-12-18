@@ -8,45 +8,44 @@ import com.example.demo.entity.Employee;
 import com.example.demo.service.EmployeeService;
 
 @RestController
-@RequestMapping("/api/employees")
 public class EmployeeController {
 
     @Autowired
-    EmployeeService service;
+    EmployeeService ser;
 
-    @PostMapping("/")
+    @PostMapping("/api/employees")
     public Employee create(@RequestBody Employee emp) {
-        return service.createEmployee(emp);
+        return ser.createEmployee(emp);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/api/employees/{id}")
     public String update(@PathVariable int id, @RequestBody Employee emp) {
-        Optional<Employee> e = service.getEmployeeById(id);
+        Optional<Employee> e = ser.getEmployeeById(id);
         if (e.isPresent()) {
             emp.setId(id);
-            service.createEmployee(emp);
+            ser.createEmployee(emp);
             return "Employee Updated Successfully";
         }
         return "Employee not found";
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/api/employees/{id}")
     public Optional<Employee> getById(@PathVariable int id) {
-        return service.getEmployeeById(id);
+        return ser.getEmployeeById(id);
     }
 
-    @GetMapping("/")
+    @GetMapping("/api/employees/")
     public List<Employee> getAll() {
-        return service.getAllEmployees();
+        return ser.getAllEmployees();
     }
 
-    @PutMapping("/{id}/deactivate")
+    @PutMapping("/api/employees/{id}/deactivate")
     public String deactivate(@PathVariable int id) {
-        Optional<Employee> e = service.getEmployeeById(id);
+        Optional<Employee> e = ser.getEmployeeById(id);
         if (e.isPresent()) {
             Employee emp = e.get();
             emp.setActive(false);
-            service.createEmployee(emp);
+            ser.createEmployee(emp);
             return "Employee Deactivated";
         }
         return "Employee not found";
