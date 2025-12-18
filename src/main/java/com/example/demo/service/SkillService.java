@@ -9,9 +9,9 @@ public interface SkillService {
 
     Skill createSkill(Skill skill);
 
-    List<Skill> fetchAllSkills();
+    List<Skill> getAllSkills();
 
-    Optional<Skill> fetchSkillById(Long id);
+    Optional<Skill> getSkillById(Long id);
 
     void deactivateSkill(Long id);
 }

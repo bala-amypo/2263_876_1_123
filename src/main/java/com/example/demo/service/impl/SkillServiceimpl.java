@@ -22,12 +22,12 @@ public class SkillServiceimpl implements SkillService {
     }
 
     @Override
-    public List<Skill> fetchAllSkills() {
+    public List<Skill> getAllSkills() {
         return repo.findAll();
     }
 
     @Override
-    public Optional<Skill> fetchSkillById(Long id) {
+    public Optional<Skill> getSkillById(Long id) {
         return repo.findById(id);
     }
 
