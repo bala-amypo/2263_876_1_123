@@ -11,10 +11,15 @@ import com.example.demo.service.EmployeeSkillService;
 
 @RestController
 @RequestMapping("/api/employee-skills")
+
 public class EmployeeSkillController {
 
-    @Autowired
-    EmployeeSkillService service;
+private final EmployeeSkillService service;
+
+public EmployeeSkillController(EmployeeSkillService service) {
+    this.service = service;
+}
+
 
     @PostMapping("/")
     public EmployeeSkill create(@RequestBody EmployeeSkill es) {
