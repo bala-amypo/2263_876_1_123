@@ -22,7 +22,7 @@ public class EmployeeController {
     }
 
     @PutMapping("/{id}")
-    public String update(@PathVariable int id, @RequestBody Employee emp) {
+    public String update(@PathVariable Long id, @RequestBody Employee emp) {
         Optional<Employee> e = ser.getEmployeeById(id);
         if (e.isPresent()) {
             emp.setId(id);
@@ -33,7 +33,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/{id}")
-    public Optional<Employee> getEmployeeById(@PathVariable int id) {
+    public Optional<Employee> getEmployeeById(@PathVariable Long id) {
         return ser.getEmployeeById(id);
     }
 
@@ -43,7 +43,7 @@ public class EmployeeController {
     }
 
     @PutMapping("/{id}/deactivate")
-    public String deactivate(@PathVariable int id) {
+    public String deactivate(@PathVariable Long id) {
         Optional<Employee> e = ser.getEmployeeById(id);
         if (e.isPresent()) {
             Employee emp = e.get();

@@ -6,5 +6,5 @@ import com.example.demo.model.Employee;
 public interface EmployeeService {
     Employee createEmployee(Employee emp);
     List<Employee> getAllEmployees();
-    Optional<Employee> getEmployeeById(int id);
+    Optional<Employee> getEmployeeById(Long id);
 }
