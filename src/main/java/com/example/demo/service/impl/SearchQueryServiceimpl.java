@@ -1,4 +1,4 @@
-package com.example.demo.service.implementation;
+package com.example.demo.service.impl;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,7 +14,7 @@ import com.example.demo.repository.SearchQueryRecordRepository;
 import com.example.demo.service.SearchQueryService;
 
 @Service
-public class SearchQueryServiceImpl implements SearchQueryService {
+public class SearchQueryServiceimpl implements SearchQueryService {
 
     @Autowired
     private SearchQueryRecordRepository searchRepo;
@@ -34,8 +34,7 @@ public class SearchQueryServiceImpl implements SearchQueryService {
             throw new IllegalArgumentException("must not be empty");
         }
 
-        List<Employee> employees =
-                employeeSkillRepo.findEmployeesByAllSkillNames(skills, userId);
+        List<Employee> employees =employeeSkillRepo.findEmployeesByAllSkillNames(skills, userId);
 
         String skillsRequested = String.join(",", skills);
 
