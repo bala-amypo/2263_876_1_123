@@ -18,8 +18,6 @@ public interface EmployeeSkillRepository extends JpaRepository<EmployeeSkill, Lo
     List<EmployeeSkill> findBySkillIdAndActiveTrue(Long skillId);
 
      @Query("SELECT DISTINCT es.employee FROM EmployeeSkill es WHERE es.skill.name IN :skills")
-    List<Employee> findEmployeesByAllSkillNames(
-            List<String> skills,
-            Long userId
-    );
+List<Employee> findEmployeesByAllSkillNames(List<String> skills);
+
 }

@@ -1,7 +1,6 @@
 package com.example.demo.service.impl;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,48 +12,32 @@ import com.example.demo.repository.SearchQueryRecordRepository;
 import com.example.demo.service.SearchQueryService;
 
 @Service
-public class SearchQueryServiceimpl implements SearchQueryService {
-
-    @Autowired
-    private SearchQueryRecordRepository searchRepo;
+public class SearchQueryServiceImpl implements SearchQueryService {
 
     @Autowired
     private EmployeeSkillRepository employeeSkillRepo;
 
-    @Override
-    public SearchQueryRecord saveQuery(SearchQueryRecord query) {
-        return searchRepo.save(query);
-    }
+    @Autowired
+    private SearchQueryRecordRepository searchQueryRecordRepo;
 
     @Override
     public List<Employee> searchEmployeesBySkills(List<String> skills, Long userId) {
 
-        if (skills == null || skills.isEmpty())
+        if (skills == null || skills.isEmpty()) {
             throw new IllegalArgumentException("must not be empty");
+        }
 
-        List<Employee> result =
-                employeeSkillRepo.findEmployeesByAllSkillNames(skills, userId);
+        List<Employee> employees =
+                employeeSkillRepo.findEmployeesByAllSkillNames(skills);
 
-        searchRepo.save(
-            new SearchQueryRecord(userId, skills.toString(), result.size())
+        SearchQueryRecord record = new SearchQueryRecord(
+                userId,
+                String.join(",", skills),
+                employees.size()
         );
 
-        return result;
-    }
+        searchQueryRecordRepo.save(record);
 
-    @Override
-    public SearchQueryRecord getQueryById(Long id) {
-
-        Optional<SearchQueryRecord> record = searchRepo.findById(id);
-
-        if (record.isPresent())
-            return record.get();
-        else
-            throw new RuntimeException("SearchQueryRecord not found");
-    }
-
-    @Override
-    public List<SearchQueryRecord> getQueriesForUser(Long userId) {
-        return searchRepo.findBySearcherId(userId);
+        return employees;
     }
 }
