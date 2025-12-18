@@ -41,7 +41,7 @@ public class EmployeeController {
     }
 
     @PutMapping("/{id}/deactivate")
-    public String deactivate(@PathVariable int id, @RequestBody Employee emp) {
+    public String deactivate(@PathVariable int id) {
         Optional<Employee> e = service.getEmployeeById(id);
         if (e.isPresent()) {
             Employee emp = e.get();
