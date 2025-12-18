@@ -10,9 +10,11 @@ public class EmployeeSkill {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "employee_id", nullable = false)
     private Employee employee;
 
     @ManyToOne
+    @JoinColumn(name = "skill_id", nullable = false)
     private Skill skill;
 
     public enum ProficiencyLevel {
@@ -30,6 +32,7 @@ public class EmployeeSkill {
     private Integer yearsOfExperience;
 
     private Boolean active = true;
+
 public Long getId() {
     return id;
 }
