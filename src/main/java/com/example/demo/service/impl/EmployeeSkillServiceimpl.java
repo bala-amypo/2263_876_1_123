@@ -41,13 +41,4 @@ public class EmployeeSkillServiceimpl implements EmployeeSkillService {
         return repo.findBySkillIdAndActiveTrue(skillId);
     }
 
-    @Override
-    public void deactivate(Long id) {
-        Optional<EmployeeSkill> es = repo.findById(id);
-
-        if (es.isPresent()) {
-            es.get().setActive(false);
-            repo.save(es.get());
-        }
-    }
 }
