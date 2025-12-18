@@ -1,4 +1,4 @@
-package com.example.demo.service.implementation;
+package com.example.demo.service.impl;
 
 import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,17 +15,17 @@ public class SkillCategoryServiceimpl implements SkillCategoryService {
     SkillCategoryRepository repo;
 
     @Override
-    public SkillCategory createEmployee(SkillCategory emp) {
-        return repo.save(emp);
+    public SkillCategory createCate(SkillCategory skl) {
+        return repo.save(skl);
     }
 
     @Override
-    public List<SkillCategory> getAllEmployees() {
+    public List<SkillCategory> getAllCate() {
         return repo.findAll();
     }
 
     @Override
-    public Optional<SkillCategory> getEmployeeById(Long id) {
+    public Optional<SkillCategory> getCateById(Long id) {
         return repo.findById(id);
     }
 }
