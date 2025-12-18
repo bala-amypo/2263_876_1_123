@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import org.springframework.web.bind.annotation.*;
 
-import com.example.demo.entity.Skill;
+import com.example.demo.model.Skill;
 import com.example.demo.service.SkillService;
 
 @RestController
