@@ -9,7 +9,7 @@ import com.example.demo.repository.EmployeeRepository;
 import com.example.demo.service.EmployeeService;
 
 @Service
-public class EmployeeServiceImpl implements EmployeeService {
+public class EmployeeServiceimpl implements EmployeeService {
 
     @Autowired
     EmployeeRepository repo;
