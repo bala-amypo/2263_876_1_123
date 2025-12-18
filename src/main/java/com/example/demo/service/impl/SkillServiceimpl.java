@@ -27,12 +27,12 @@ public class SkillServiceimpl implements SkillService {
     }
 
     @Override
-    public Optional<Skill> fetchSkillById(int id) {
+    public Optional<Skill> fetchSkillById(Long id) {
         return repo.findById(id);
     }
 
     @Override
-    public void deleteSkill(int id) {
+    public void deleteSkill(Long id) {
         repo.deleteById(id);
     }
 }

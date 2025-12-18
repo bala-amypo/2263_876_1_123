@@ -11,7 +11,7 @@ public interface SkillService {
 
     List<Skill> fetchAllSkills();
 
-    Optional<Skill> fetchSkillById(int id);
+    Optional<Skill> fetchSkillById(Long id);
 
-    void deactivateSkill(int id);
+    void deactivateSkill(Long id);
 }
