@@ -15,7 +15,7 @@ public class EmployeeSkill {
     @ManyToOne
     private Skill skill;
 
-    // 🔹 Enum defined inside the entity
+    //  Enum defined inside the entity
     public enum ProficiencyLevel {
         Beginner,
         Intermediate,
