@@ -17,7 +17,7 @@ public class SearchQueryServiceimpl implements SearchQueryService {
     private final EmployeeSkillRepository employeeSkillRepository;
 
     // Constructor injection (TestNG-compliant)
-    public SearchQueryServiceImpl(SearchQueryRecordRepository searchQueryRecordRepository,
+    public SearchQueryServiceimpl(SearchQueryRecordRepository searchQueryRecordRepository,
                                   EmployeeSkillRepository employeeSkillRepository) {
         this.searchQueryRecordRepository = searchQueryRecordRepository;
         this.employeeSkillRepository = employeeSkillRepository;
