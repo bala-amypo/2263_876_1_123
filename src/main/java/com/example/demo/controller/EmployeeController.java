@@ -29,17 +29,17 @@ public class EmployeeController {
         return "Employee not found";
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/api/employees/{id}")
     public Optional<Employee> getById(@PathVariable int id) {
         return ser.getEmployeeById(id);
     }
 
-    @GetMapping("/")
+    @GetMapping("/api/employees/")
     public List<Employee> getAll() {
         return ser.getAllEmployees();
     }
 
-    @PutMapping("/{id}/deactivate")
+    @PutMapping("/api/employees/{id}/deactivate")
     public String deactivate(@PathVariable int id,@RequestBody Employee emp) {
         Optional<Employee> e = ser.getEmployeeById(id);
         if (e.isPresent()) {
