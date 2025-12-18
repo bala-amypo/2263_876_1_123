@@ -5,16 +5,16 @@ import java.util.Optional;
 
 import org.springframework.web.bind.annotation.*;
 
-import com.example.demo.model.Employee;
-import com.example.demo.service.EmployeeService;
+import com.example.demo.model.SkillCategory;
+import com.example.demo.service.SkillCategoryService;
 
 @RestController
 @RequestMapping("/api/skill-categories")
-public class Ski {
+public class SkillCategoryController {
 
-    private final EmployeeService ser;
+    private final SkillCategoryService ser;
 
-    public EmployeeController(EmployeeService ser) {
+    public EmployeeController(SkillCategoryService ser) {
         this.ser = ser;
     }
 
@@ -53,12 +53,12 @@ public class Ski {
         Optional<Employee> e = ser.getEmployeeById(id);
 
         if (e.isPresent()) {
-            Employee emp = e.get();
+            SkillCategory emp = e.get();
             emp.setActive(false);
             ser.createEmployee(emp);
-            return "Employee Deactivated";
+            return "SkillCategory Deactivated";
         }
 
-        return "Employee not found";
+        return id+" not found";
     }
 }
