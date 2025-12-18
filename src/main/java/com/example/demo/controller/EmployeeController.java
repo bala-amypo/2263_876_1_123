@@ -31,12 +31,12 @@ public class EmployeeController {
     }
 
     @GetMapping("/{id}")
-    public Optional<Employee> getById(@PathVariable int id) {
+    public Optional<Employee> getEmployeeById(@PathVariable int id) {
         return service.getEmployeeById(id);
     }
 
     @GetMapping("/")
-    public List<Employee> getAll() {
+    public List<Employee>getAllEmployees() {
         return service.getAllEmployees();
     }
 
