@@ -22,22 +22,22 @@ public EmployeeSkillController(EmployeeSkillService service) {
 
 
     @PostMapping("/")
-    public EmployeeSkill create(@RequestBody EmployeeSkill es) {
+    public EmployeeSkill createData(@RequestBody EmployeeSkill es) {
         return service.createData(es);
     }
 
     @GetMapping("/")
-    public List<EmployeeSkill> getAll() {
+    public List<EmployeeSkill> fetchAll() {
         return service.fetchAll();
     }
 
     @GetMapping("/{id}")
-    public Optional<EmployeeSkill> getById(@PathVariable Long id) {
+    public Optional<EmployeeSkill> fetchById(@PathVariable Long id) {
         return service.fetchById(id);
     }
 
     @GetMapping("/employee/{employeeId}")
-    public List<EmployeeSkill> getByEmployee(@PathVariable Long employeeId) {
+    public List<EmployeeSkill> fetchByEmployee(@PathVariable Long employeeId) {
         return service.fetchByEmployee(employeeId);
     }
 
