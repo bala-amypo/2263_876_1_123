@@ -13,5 +13,5 @@ public interface SkillService {
 
     Optional<Skill> fetchSkillById(int id);
 
-    void deleteSkill(int id);
+    void deactivateSkill(int id);
 }
