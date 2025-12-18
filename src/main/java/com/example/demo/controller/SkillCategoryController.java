@@ -14,47 +14,47 @@ public class SkillCategoryController {
 
     private final SkillCategoryService ser;
 
-    public EmployeeController(SkillCategoryService ser) {
+    public SkillCategoryController(SkillCategoryService ser) {
         this.ser = ser;
     }
 
     @PostMapping("/")
-    public Employee createEmployee(@RequestBody Employee emp) {
-        return ser.createEmployee(emp);
+    public Employee createCate(@RequestBody SkillCategory skl) {
+        return ser.createCate(skl);
     }
 
     @PutMapping("/{id}")
-    public String update(@PathVariable Long id, @RequestBody Employee emp) {
+    public String update(@PathVariable Long id, @RequestBody SkillCategory skl) {
 
-        Optional<Employee> e = ser.getEmployeeById(id);
+        Optional<SkillCategory> e = ser.getEmployeeById(id);
 
         if (e.isPresent()) {
-            emp.setId(id);
-            ser.createEmployee(emp);
-            return "Employee Updated Successfully";
+            skl.setId(id);
+            ser.createCate(skl);
+            return "SkillCategory Updated Successfully";
         }
 
-        return "Employee not found";
+        return id+" not found";
     }
 
     @GetMapping("/{id}")
-    public Optional<Employee> getEmployeeById(@PathVariable Long id) {
-        return ser.getEmployeeById(id);
+    public Optional<SkillCategory> getCateById(@PathVariable Long id) {
+        return ser.getCateById(id);
     }
 
     @GetMapping("/")
-    public List<Employee> getAllEmployees() {
+    public List<SkillCategory> getAllEmployees() {
         return ser.getAllEmployees();
     }
 
     @PutMapping("/{id}/deactivate")
     public String deactivate(@PathVariable Long id) {
 
-        Optional<Employee> e = ser.getEmployeeById(id);
+        Optional<SkillCategory> e = ser.getEmployeeById(id);
 
         if (e.isPresent()) {
-            SkillCategory emp = e.get();
-            emp.setActive(false);
+            SkillCategory skl = e.get();
+            skl.setActive(false);
             ser.createEmployee(emp);
             return "SkillCategory Deactivated";
         }
