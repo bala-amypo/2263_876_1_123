@@ -8,18 +8,17 @@ import com.example.demo.entity.Employee;
 import com.example.demo.service.EmployeeService;
 
 @RestController
-@RequestMapping("/api/employees")
 public class EmployeeController {
 
     @Autowired
     EmployeeService ser;
 
-    @PostMapping("/")
+    @PostMapping("/api/employees")
     public Employee create(@RequestBody Employee emp) {
         return ser.createEmployee(emp);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/api/employees/{id}")
     public String update(@PathVariable int id, @RequestBody Employee emp) {
         Optional<Employee> e = ser.getEmployeeById(id);
         if (e.isPresent()) {
@@ -41,7 +40,7 @@ public class EmployeeController {
     }
 
     @PutMapping("/{id}/deactivate")
-    public String deactivate(@PathVariable int id) {
+    public String deactivate(@PathVariable int id,@RequestBody Employee emp) {
         Optional<Employee> e = ser.getEmployeeById(id);
         if (e.isPresent()) {
             Employee emp = e.get();
