@@ -1,6 +1,8 @@
-package com.example.demo.service.impl;
+package com.example.demo.service.implementation;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,10 +17,15 @@ import com.example.demo.service.SearchQueryService;
 public class SearchQueryServiceImpl implements SearchQueryService {
 
     @Autowired
-    private EmployeeSkillRepository employeeSkillRepo;
+    private SearchQueryRecordRepository searchRepo;
 
     @Autowired
-    private SearchQueryRecordRepository searchQueryRecordRepo;
+    private EmployeeSkillRepository employeeSkillRepo;
+
+    @Override
+    public SearchQueryRecord saveQuery(SearchQueryRecord query) {
+        return searchRepo.save(query);
+    }
 
     @Override
     public List<Employee> searchEmployeesBySkills(List<String> skills, Long userId) {
@@ -28,16 +35,35 @@ public class SearchQueryServiceImpl implements SearchQueryService {
         }
 
         List<Employee> employees =
-                employeeSkillRepo.findEmployeesByAllSkillNames(skills);
+                employeeSkillRepo.findEmployeesByAllSkillNames(skills, userId);
+
+        String skillsRequested = String.join(",", skills);
 
         SearchQueryRecord record = new SearchQueryRecord(
                 userId,
-                String.join(",", skills),
+                skillsRequested,
                 employees.size()
         );
 
-        searchQueryRecordRepo.save(record);
+        searchRepo.save(record);
 
         return employees;
+    }
+
+    @Override
+    public SearchQueryRecord getQueryById(Long id) {
+
+        Optional<SearchQueryRecord> record = searchRepo.findById(id);
+
+        if (record.isPresent()) {
+            return record.get();
+        } else {
+            throw new RuntimeException("SearchQueryRecord not found");
+        }
+    }
+
+    @Override
+    public List<SearchQueryRecord> getQueriesForUser(Long userId) {
+        return searchRepo.findBySearcherId(userId);
     }
 }
