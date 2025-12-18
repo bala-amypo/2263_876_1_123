@@ -55,7 +55,7 @@ public class SkillCategoryController {
         if (e.isPresent()) {
             SkillCategory skl = e.get();
             skl.setActive(false);
-            ser.createCate(emp);
+            ser.createCate(skl);
             return "SkillCategory Deactivated";
         }
 
