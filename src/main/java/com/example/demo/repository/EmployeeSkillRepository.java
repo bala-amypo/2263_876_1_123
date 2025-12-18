@@ -1,53 +1,16 @@
-package com.example.demo.service.impl;
+package com.example.demo.repository;
 
 import java.util.List;
-import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import com.example.demo.model.EmployeeSkill;
-import com.example.demo.repository.EmployeeSkillRepository;
-import com.example.demo.service.EmployeeSkillService;
 
-@Service
-public class EmployeeSkillServiceImpl implements EmployeeSkillService {
+@Repository
+public interface EmployeeSkillRepository extends JpaRepository<EmployeeSkill, Long> {
 
-    @Autowired
-    EmployeeSkillRepository repo;
+    List<EmployeeSkill> findByEmployeeIdAndActiveTrue(Long employeeId);
 
-    @Override
-    public EmployeeSkill createData(EmployeeSkill es) {
-        return repo.save(es);
-    }
-
-    @Override
-    public List<EmployeeSkill> fetchAll() {
-        return repo.findAll();
-    }
-
-    @Override
-    public Optional<EmployeeSkill> fetchById(Long id) {
-        return repo.findById(id);
-    }
-
-    @Override
-    public List<EmployeeSkill> fetchByEmployee(Long employeeId) {
-        return repo.findByEmployeeIdAndActiveTrue(employeeId);
-    }
-
-    @Override
-    public List<EmployeeSkill> fetchBySkill(Long skillId) {
-        return repo.findBySkillIdAndActiveTrue(skillId);
-    }
-
-    @Override
-    public void deactivate(Long id) {
-        Optional<EmployeeSkill> es = repo.findById(id);
-
-        if (es.isPresent()) {
-            es.get().setActive(false);
-            repo.save(es.get());
-        }
-    }
+    List<EmployeeSkill> findBySkillIdAndActiveTrue(Long skillId);
 }
