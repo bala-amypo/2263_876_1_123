@@ -70,11 +70,9 @@ public void setActive(Boolean active) {
 
     // Parameterized constructor
     public EmployeeSkill(Employee employee, Skill skill,
-                         ProficiencyLevel proficiencyLevel,
                          Integer yearsOfExperience, Boolean active) {
         this.employee = employee;
         this.skill = skill;
-        this.proficiencyLevel = proficiencyLevel;
         this.yearsOfExperience = yearsOfExperience;
         this.active = active;
     }
