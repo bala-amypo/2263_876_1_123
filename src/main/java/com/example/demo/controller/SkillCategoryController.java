@@ -19,14 +19,14 @@ public class SkillCategoryController {
     }
 
     @PostMapping("/")
-    public Employee createCate(@RequestBody SkillCategory skl) {
+    public SkillCategory createCate(@RequestBody SkillCategory skl) {
         return ser.createCate(skl);
     }
 
     @PutMapping("/{id}")
     public String update(@PathVariable Long id, @RequestBody SkillCategory skl) {
 
-        Optional<SkillCategory> e = ser.getEmployeeById(id);
+        Optional<SkillCategory> e = ser.getCateById(id);
 
         if (e.isPresent()) {
             skl.setId(id);
@@ -43,19 +43,19 @@ public class SkillCategoryController {
     }
 
     @GetMapping("/")
-    public List<SkillCategory> getAllEmployees() {
-        return ser.getAllEmployees();
+    public List<SkillCategory> getAllCate() {
+        return ser.getAllCate();
     }
 
     @PutMapping("/{id}/deactivate")
     public String deactivate(@PathVariable Long id) {
 
-        Optional<SkillCategory> e = ser.getEmployeeById(id);
+        Optional<SkillCategory> e = ser.getCateById(id);
 
         if (e.isPresent()) {
             SkillCategory skl = e.get();
             skl.setActive(false);
-            ser.createEmployee(emp);
+            ser.createCate(emp);
             return "SkillCategory Deactivated";
         }
 
