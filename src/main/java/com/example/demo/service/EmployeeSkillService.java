@@ -17,5 +17,4 @@ public interface EmployeeSkillService {
 
     List<EmployeeSkill> fetchBySkill(Long skillId);
 
-    void deactivate(Long id);
 }
