@@ -16,5 +16,13 @@ public interface EmployeeSkillRepository extends JpaRepository<EmployeeSkill, Lo
     List<EmployeeSkill> findByEmployeeIdAndActiveTrue(Long employeeId);
 
     List<EmployeeSkill> findBySkillIdAndActiveTrue(Long skillId);
+    @Query("""
+        SELECT DISTINCT es.employee
+        FROM EmployeeSkill es
+        WHERE es.skill.name IN :skills
+          AND es.employee.active = true
+          AND es.active = true
+    """)
+    List<Employee> findEmployeesByAllSkillNames(List<String> skills, Long userId);
 
 }
