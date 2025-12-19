@@ -3,7 +3,6 @@ package com.example.demo.controller;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.model.EmployeeSkill;
@@ -11,54 +10,57 @@ import com.example.demo.service.EmployeeSkillService;
 
 @RestController
 @RequestMapping("/api/employee-skills")
-
 public class EmployeeSkillController {
 
-private final EmployeeSkillService service;
+    private final EmployeeSkillService service;
 
-public EmployeeSkillController(EmployeeSkillService service) {
-    this.service = service;
-}
-
+    public EmployeeSkillController(EmployeeSkillService service) {
+        this.service = service;
+    }
 
     @PostMapping("/")
     public EmployeeSkill createData(@RequestBody EmployeeSkill es) {
         return service.createData(es);
     }
 
-    @GetMapping("/")
-    public List<EmployeeSkill> fetchAll() {
-        return service.fetchAll();
+    @PutMapping("/{id}")
+    public String updateData(@PathVariable Long id,
+                             @RequestBody EmployeeSkill es) {
+
+        Optional<EmployeeSkill> existing = service.fetchById(id);
+
+        if (existing.isPresent()) {
+            es.setId(id);
+            service.createData(es);
+            return "EmployeeSkill updated successfully";
+        } else {
+            return id + " not found";
+        }
     }
 
-    @GetMapping("/{id}")
-    public Optional<EmployeeSkill> fetchById(@PathVariable Long id) {
-        return service.fetchById(id);
-    }
-
+    
     @GetMapping("/employee/{employeeId}")
     public List<EmployeeSkill> fetchByEmployee(@PathVariable Long employeeId) {
         return service.fetchByEmployee(employeeId);
     }
 
+    
     @GetMapping("/skill/{skillId}")
-    public List<EmployeeSkill> getBySkill(@PathVariable Long skillId) {
+    public List<EmployeeSkill> fetchBySkill(@PathVariable Long skillId) {
         return service.fetchBySkill(skillId);
     }
 
     @PutMapping("/{id}/deactivate")
-public String deactivate(@PathVariable Long id) {
+    public String deactivate(@PathVariable Long id) {
 
-    Optional<EmployeeSkill> es = service.fetchById(id);
+        Optional<EmployeeSkill> es = service.fetchById(id);
 
-    if (es.isPresent()) {
-        es.get().setActive(false);
-        service.createData(es.get());
-        return "EmployeeSkill deactivated successfully";
-    } 
-    else {
-        return id + " not found";
+        if (es.isPresent()) {
+            es.get().setActive(false);
+            service.createData(es.get());
+            return "EmployeeSkill deactivated successfully";
+        } else {
+            return id + " not found";
+        }
     }
-}
-
 }
