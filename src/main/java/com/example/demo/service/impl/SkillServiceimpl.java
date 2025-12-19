@@ -15,7 +15,9 @@ public class SkillServiceimpl implements SkillService {
 
     
     SkillRepository skillRepository;
-    
+    public SkillServiceimpl(SkillRepository skillRepository) {
+        this.skillRepository = skillRepository;
+    }
 
     @Override
     public Skill createSkill(Skill skill) {
