@@ -1,17 +1,30 @@
 package com.example.demo.repository;
 
-import java.util.List;
-import java.util.Optional;
-
+import com.example.demo.model.Employee;
+import com.example.demo.model.EmployeeSkill;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.example.demo.model.Employee;
+import java.util.List;
 
 @Repository
-public interface EmployeeRepository extends JpaRepository<Employee, Long> {
+public interface EmployeeSkillRepository extends JpaRepository<EmployeeSkill, Long> {
 
-    Optional<Employee> findByEmail(String email);
+    // Dynamic query to find employees who have all skills in the list
+    @Query("""
+        SELECT es.employee
+        FROM EmployeeSkill es
+        WHERE es.active = true
+          AND es.employee.active = true
+          AND es.skill.name IN :skills
+        GROUP BY es.employee
+        HAVING COUNT(DISTINCT es.skill.name) = :#{#skills.size()}
+    """)
+    List<Employee> findEmployeesByAllSkillNames(@Param("skills") List<String> skills);
 
-    List<Employee> findByActiveTrue();
+    List<EmployeeSkill> findByEmployeeIdAndActiveTrue(Long employeeId);
+
+    List<EmployeeSkill> findBySkillIdAndActiveTrue(Long skillId);
 }
