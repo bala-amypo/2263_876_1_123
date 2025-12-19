@@ -5,7 +5,6 @@ import com.example.demo.service.EmployeeSkillService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/employee-skills")
@@ -17,42 +16,34 @@ public class EmployeeSkillController {
         this.service = service;
     }
 
-    @PostMapping("/")
-    public EmployeeSkill createData(@RequestBody EmployeeSkill es) {
-        return service.createData(es);
+    // CREATE
+    @PostMapping
+    public EmployeeSkill create(@RequestBody EmployeeSkill mapping) {
+        return service.createEmployeeSkill(mapping);
     }
 
+    // UPDATE
     @PutMapping("/{id}")
-    public String updateData(@PathVariable Long id, @RequestBody EmployeeSkill es) {
-        Optional<EmployeeSkill> existing = service.fetchById(id);
-        if (existing.isPresent()) {
-            es.setId(id);
-            service.createData(es);
-            return "EmployeeSkill updated successfully";
-        } else {
-            return id + " not found";
-        }
+    public EmployeeSkill update(@PathVariable Long id,
+                                @RequestBody EmployeeSkill mapping) {
+        return service.updateEmployeeSkill(id, mapping);
     }
 
+    // GET SKILLS FOR EMPLOYEE
     @GetMapping("/employee/{employeeId}")
-    public List<EmployeeSkill> fetchByEmployee(@PathVariable Long employeeId) {
-        return service.fetchByEmployee(employeeId);
+    public List<EmployeeSkill> getSkillsForEmployee(@PathVariable Long employeeId) {
+        return service.getSkillsForEmployee(employeeId);
     }
 
+    // GET EMPLOYEES BY SKILL
     @GetMapping("/skill/{skillId}")
-    public List<EmployeeSkill> fetchBySkill(@PathVariable Long skillId) {
-        return service.fetchBySkill(skillId);
+    public List<EmployeeSkill> getEmployeesBySkill(@PathVariable Long skillId) {
+        return service.getEmployeesBySkill(skillId);
     }
 
-    @PutMapping("/{id}/deactivate")
-    public String deactivate(@PathVariable Long id) {
-        Optional<EmployeeSkill> es = service.fetchById(id);
-        if (es.isPresent()) {
-            es.get().setActive(false);
-            service.createData(es.get());
-            return "EmployeeSkill deactivated successfully";
-        } else {
-            return id + " not found";
-        }
+    // DEACTIVATE
+    @DeleteMapping("/{id}")
+    public void deactivate(@PathVariable Long id) {
+        service.deactivateEmployeeSkill(id);
     }
 }
