@@ -5,9 +5,10 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import com.example.demo.service.EmployeeSkillService;
 import com.example.demo.model.EmployeeSkill;
 import com.example.demo.repository.EmployeeSkillRepository;
+
 
 @Service
 public class EmployeeSkillServiceimpl implements EmployeeSkillService {
