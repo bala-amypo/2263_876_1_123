@@ -6,9 +6,11 @@ import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.model.Employee;
 import com.example.demo.service.EmployeeService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping("/api/employees")
+@Tag(name = "Employees", description = "Employee management APIs")
 public class EmployeeController {
 
     private final EmployeeService ser;
@@ -23,9 +25,8 @@ public class EmployeeController {
     }
 
     @PutMapping("/{id}")
-    public Employee updateEmployee(
-            @PathVariable Long id,
-            @RequestBody Employee employee) {
+    public Employee updateEmployee(@PathVariable Long id,
+                                   @RequestBody Employee employee) {
         return ser.updateEmployee(id, employee);
     }
 
@@ -40,17 +41,7 @@ public class EmployeeController {
     }
 
     @PutMapping("/{id}/deactivate")
-    public String deactivate(@PathVariable Long id) {
-
-        Optional<Employee> e = ser.getEmployeeById(id);
-
-        if (e.isPresent()) {
-            Employee emp = e.get();
-            emp.setActive(false);
-            ser.createEmployee(emp);
-            return "Employee Deactivated";
-        }
-
-        return "Employee not found";
+    public void deactivate(@PathVariable Long id) {
+        ser.deactivateEmployee(id);
     }
 }
