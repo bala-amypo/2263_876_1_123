@@ -13,8 +13,9 @@ import com.example.demo.service.SkillService;
 @Service
 public class SkillServiceimpl implements SkillService {
 
-    @Autowired
-    SkillRepository repo;
+    
+    SkillRepository skillRepository;
+    
 
     @Override
     public Skill createSkill(Skill skill) {
