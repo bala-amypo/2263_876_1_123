@@ -4,6 +4,7 @@ package com.example.demo.model;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "skill_categories")
 public class SkillCategory {
 
     @Id
