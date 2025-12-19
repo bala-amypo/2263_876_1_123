@@ -42,7 +42,6 @@ public class EmployeeController {
 
     @PutMapping("/{id}/deactivate")
     public void deactivate(@PathVariable Long id) {
-    ser.deactivateEmployee(id);
-}
-
+        ser.deactivateEmployee(id);
+    }
 }

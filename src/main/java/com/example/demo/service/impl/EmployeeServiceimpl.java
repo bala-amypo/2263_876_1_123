@@ -21,7 +21,7 @@ public class EmployeeServiceimpl implements EmployeeService {
 
     @Override
     public Employee createEmployee(Employee employee) {
-        // unique email check, no lambda if you prefer
+        // unique email check, simple if
         Employee existing = repo.findByEmail(employee.getEmail()).orElse(null);
         if (existing != null) {
             throw new IllegalArgumentException("Email already exists");
@@ -42,7 +42,6 @@ public class EmployeeServiceimpl implements EmployeeService {
             throw new ResourceNotFoundException("Employee not found");
         }
 
-        // use the correct field names from your Employee entity
         existing.setFullName(employee.getFullName());
         existing.setEmail(employee.getEmail());
         existing.setDepartment(employee.getDepartment());
@@ -64,17 +63,16 @@ public class EmployeeServiceimpl implements EmployeeService {
         return emp;
     }
 
+    // CHANGE HERE: return all employees, including inactive
     @Override
     public List<Employee> getAllEmployees() {
-        return repo.findByActiveTrue();
+        return repo.findAll();
     }
 
-   @Override
-public void deactivateEmployee(Long id) {
-    Employee employee = getEmployeeById(id);   
-    employee.setActive(false);                 
-    repo.save(employee);                       
+    @Override
+    public void deactivateEmployee(Long id) {
+        Employee employee = getEmployeeById(id);   // throws if not found
+        employee.setActive(false);                 // just update flag
+        repo.save(employee);                       // UPDATE, not DELETE
+    }
 }
-
-}
-
