@@ -6,6 +6,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "search_query_records")
 public class SearchQueryRecord {
 
     @Id
