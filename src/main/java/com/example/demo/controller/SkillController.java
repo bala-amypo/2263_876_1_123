@@ -1,7 +1,6 @@
 package com.example.demo.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.web.bind.annotation.*;
 
@@ -26,13 +25,11 @@ public class SkillController {
     @PutMapping("/{id}")
     public Skill updateSkill(@PathVariable Long id,
                              @RequestBody Skill skill) {
-
-        skill.setId(id);
-        return skillService.createSkill(skill);
+        return skillService.updateSkill(id, skill);
     }
 
     @GetMapping("/{id}")
-    public Optional<Skill> getSkillById(@PathVariable Long id) {
+    public Skill getSkillById(@PathVariable Long id) {
         return skillService.getSkillById(id);
     }
 
@@ -43,15 +40,7 @@ public class SkillController {
 
     @PutMapping("/{id}/deactivate")
     public String deactivateSkill(@PathVariable Long id) {
-
-        Optional<Skill> skill = skillService.getSkillById(id);
-
-        if (skill.isPresent()) {
-            skillService.deactivateSkill(id);
-            return "Skill Deactivated Successfully";
-        } else {
-            return id + " not found";
-        }
+        skillService.deactivateSkill(id);
+        return "Skill Deactivated Successfully";
     }
 }
-
