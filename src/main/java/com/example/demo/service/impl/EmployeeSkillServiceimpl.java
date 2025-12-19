@@ -1,4 +1,4 @@
-package com.example.demo.service.impl;
+package com.example.demo.service;
 
 import java.util.List;
 import java.util.Optional;
@@ -8,22 +8,16 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.model.EmployeeSkill;
 import com.example.demo.repository.EmployeeSkillRepository;
-import com.example.demo.service.EmployeeSkillService;
 
 @Service
 public class EmployeeSkillServiceimpl implements EmployeeSkillService {
 
     @Autowired
-    EmployeeSkillRepository repo;
+    private EmployeeSkillRepository repo;
 
     @Override
     public EmployeeSkill createData(EmployeeSkill es) {
         return repo.save(es);
-    }
-
-    @Override
-    public List<EmployeeSkill> fetchAll() {
-        return repo.findAll();
     }
 
     @Override
@@ -40,5 +34,4 @@ public class EmployeeSkillServiceimpl implements EmployeeSkillService {
     public List<EmployeeSkill> fetchBySkill(Long skillId) {
         return repo.findBySkillIdAndActiveTrue(skillId);
     }
-
 }

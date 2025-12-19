@@ -9,12 +9,9 @@ public interface EmployeeSkillService {
 
     EmployeeSkill createData(EmployeeSkill es);
 
-    List<EmployeeSkill> fetchAll();
-
     Optional<EmployeeSkill> fetchById(Long id);
 
     List<EmployeeSkill> fetchByEmployee(Long employeeId);
 
     List<EmployeeSkill> fetchBySkill(Long skillId);
-
 }
