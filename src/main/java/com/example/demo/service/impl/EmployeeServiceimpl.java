@@ -69,11 +69,12 @@ public class EmployeeServiceimpl implements EmployeeService {
         return repo.findByActiveTrue();
     }
 
-    @Override
-    public void deactivateEmployee(Long id) {
-        Employee employee = getEmployeeById(id);
-        employee.setActive(false);
-        repo.save(employee);
-    }
+   @Override
+public void deactivateEmployee(Long id) {
+    Employee employee = getEmployeeById(id);   // throws "Employee not found" if missing
+    employee.setActive(false);                 // soft delete
+    repo.save(employee);                       // update row, do NOT delete
+}
+
 }
 
