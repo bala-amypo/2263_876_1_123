@@ -1,14 +1,15 @@
 package com.example.demo.controller;
 
-import java.util.List;
-
-import org.springframework.web.bind.annotation.*;
-
 import com.example.demo.model.EmployeeSkill;
 import com.example.demo.service.EmployeeSkillService;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/employee-skills")
+@Tag(name = "Employee Skills", description = "Employee–Skill mapping APIs")
 public class EmployeeSkillController {
 
     private final EmployeeSkillService service;
@@ -18,29 +19,28 @@ public class EmployeeSkillController {
     }
 
     @PostMapping
-    public EmployeeSkill create(@RequestBody EmployeeSkill es) {
+    public EmployeeSkill createEmployeeSkill(@RequestBody EmployeeSkill es) {
         return service.createEmployeeSkill(es);
     }
 
     @PutMapping("/{id}")
-    public EmployeeSkill update(@PathVariable Long id,
-                                @RequestBody EmployeeSkill es) {
+    public EmployeeSkill updateEmployeeSkill(@PathVariable Long id,
+                                             @RequestBody EmployeeSkill es) {
         return service.updateEmployeeSkill(id, es);
     }
 
     @GetMapping("/employee/{employeeId}")
-    public List<EmployeeSkill> getByEmployee(@PathVariable Long employeeId) {
+    public List<EmployeeSkill> getSkillsForEmployee(@PathVariable Long employeeId) {
         return service.getSkillsForEmployee(employeeId);
     }
 
     @GetMapping("/skill/{skillId}")
-    public List<EmployeeSkill> getBySkill(@PathVariable Long skillId) {
+    public List<EmployeeSkill> getEmployeesBySkill(@PathVariable Long skillId) {
         return service.getEmployeesBySkill(skillId);
     }
 
     @PutMapping("/{id}/deactivate")
-    public String deactivate(@PathVariable Long id) {
+    public void deactivateEmployeeSkill(@PathVariable Long id) {
         service.deactivateEmployeeSkill(id);
-        return "EmployeeSkill deactivated successfully";
     }
 }
