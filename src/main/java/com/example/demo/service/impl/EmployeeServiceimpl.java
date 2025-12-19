@@ -10,7 +10,7 @@ import com.example.demo.service.EmployeeService;
 import com.example.demo.exception.ResourceNotFoundException;
 
 @Service
-public class EmployeeServiceImpl implements EmployeeService {
+public class EmployeeServiceimpl implements EmployeeService {
 
    @Autowired
    EmployeeRepository repo;
