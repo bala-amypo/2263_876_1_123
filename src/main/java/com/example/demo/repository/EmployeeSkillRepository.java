@@ -21,10 +21,7 @@ public interface EmployeeSkillRepository extends JpaRepository<EmployeeSkill, Lo
         GROUP BY es.employee
         HAVING COUNT(DISTINCT es.skill.name) = :#{#skills.size()}
     """)
-    List<Employee> findEmployeesByAllSkillNames(
-            @Param("skills") List<String> skills,
-            Long userId   // IMPORTANT: no @Param here, and not used in query
-    );
+    List<Employee> findEmployeesByAllSkillNames(@Param("skills") List<String> skills);
 
     List<EmployeeSkill> findByEmployeeIdAndActiveTrue(Long employeeId);
 
