@@ -12,19 +12,21 @@ import java.util.List;
 @Repository
 public interface EmployeeSkillRepository extends JpaRepository<EmployeeSkill, Long> {
 
-    // Find employees who have ALL the given skills
     @Query("""
-        SELECT e.employee 
-        FROM EmployeeSkill e 
-        WHERE e.active = true 
-          AND e.skill.name IN :skills 
-          AND e.employee.active = true 
-        GROUP BY e.employee 
-        HAVING COUNT(DISTINCT e.skill.name) = :#{#skills.size()}
+        SELECT es.employee
+        FROM EmployeeSkill es
+        WHERE es.active = true
+          AND es.employee.active = true
+          AND es.skill.name IN :skills
+          AND :userId IS NOT NULL
+        GROUP BY es.employee
+        HAVING COUNT(DISTINCT es.skill.name) = :#{#skills.size()}
     """)
-    List<Employee> findEmployeesByAllSkillNames(@Param("skills") List<String> skills, @Param("userId") Long userId);
+    List<Employee> findEmployeesByAllSkillNames(
+            @Param("skills") List<String> skills,
+            @Param("userId") Long userId
+    );
 
-    // Other required repository methods
     List<EmployeeSkill> findByEmployeeIdAndActiveTrue(Long employeeId);
 
     List<EmployeeSkill> findBySkillIdAndActiveTrue(Long skillId);
