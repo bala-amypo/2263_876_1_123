@@ -13,18 +13,15 @@ public class EmployeeController {
 
     private final EmployeeService ser;
 
-    // constructor injection
     public EmployeeController(EmployeeService ser) {
         this.ser = ser;
     }
 
-    // POST /api/employees
     @PostMapping
     public Employee createEmployee(@RequestBody Employee employee) {
         return ser.createEmployee(employee);
     }
 
-    // PUT /api/employees/{id}
     @PutMapping("/{id}")
     public Employee updateEmployee(
             @PathVariable Long id,
@@ -32,26 +29,15 @@ public class EmployeeController {
         return ser.updateEmployee(id, employee);
     }
 
-    // GET /api/employees/{id}
     @GetMapping("/{id}")
     public Employee getEmployeeById(@PathVariable Long id) {
         return ser.getEmployeeById(id);
     }
 
-    // GET /api/employees
     @GetMapping
     public List<Employee> getAllEmployees() {
         return ser.getAllEmployees();
     }
-
-    // PUT /api/employees/{id}/deactivate
-    @PutMapping("/{id}/deactivate")
-    public String deactivateEmployee(@PathVariable Long id) {
-        employeeService.deactivateEmployee(id);
-        return "Employee deactivated successfully";
-    }
-}
-
 
     @PutMapping("/{id}/deactivate")
     public String deactivate(@PathVariable Long id) {
