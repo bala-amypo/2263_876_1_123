@@ -23,7 +23,7 @@ public interface EmployeeSkillRepository extends JpaRepository<EmployeeSkill, Lo
     """)
     List<Employee> findEmployeesByAllSkillNames(
             @Param("skills") List<String> skills,
-            Long userId   // keep this parameter for tests, but DO NOT annotate it
+            Long userId   // IMPORTANT: no @Param here, and not used in query
     );
 
     List<EmployeeSkill> findByEmployeeIdAndActiveTrue(Long employeeId);
