@@ -34,8 +34,7 @@ public class SearchQueryServiceimpl implements SearchQueryService {
             throw new IllegalArgumentException("must not be empty");
         }
 
-        // Repository query: get employees with ALL requested skills
-        List<Employee> employees = employeeSkillRepository.findEmployeesByAllSkillNames(skills, userId);
+        List<Employee> employees = employeeSkillRepository.findEmployeesByAllSkillNames(skills);
 
         // Save the search query record
         String skillNames = skills.stream().collect(Collectors.joining(","));
