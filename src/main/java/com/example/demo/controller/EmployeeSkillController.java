@@ -5,6 +5,7 @@ import com.example.demo.service.EmployeeSkillService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/employee-skills")
@@ -29,20 +30,19 @@ public class EmployeeSkillController {
         return service.updateEmployeeSkill(id, mapping);
     }
 
-    // GET SKILLS FOR EMPLOYEE
+    // GET ACTIVE SKILLS FOR EMPLOYEE
     @GetMapping("/employee/{employeeId}")
     public List<EmployeeSkill> getSkillsForEmployee(@PathVariable Long employeeId) {
         return service.getSkillsForEmployee(employeeId);
     }
 
-    // GET EMPLOYEES BY SKILL
+    // GET ACTIVE EMPLOYEES FOR SKILL
     @GetMapping("/skill/{skillId}")
     public List<EmployeeSkill> getEmployeesBySkill(@PathVariable Long skillId) {
         return service.getEmployeesBySkill(skillId);
     }
 
-    // DEACTIVATE
-    @DeleteMapping("/{id}")
+    @PutMapping("/{id}/deactivate")
     public void deactivate(@PathVariable Long id) {
         service.deactivateEmployeeSkill(id);
     }
