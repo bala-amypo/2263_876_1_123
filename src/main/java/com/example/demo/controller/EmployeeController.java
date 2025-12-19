@@ -1,7 +1,6 @@
 package com.example.demo.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.web.bind.annotation.*;
 
@@ -14,38 +13,45 @@ public class EmployeeController {
 
     private final EmployeeService ser;
 
+    // constructor injection
     public EmployeeController(EmployeeService ser) {
         this.ser = ser;
     }
 
-    @PostMapping("/")
-    public Employee createEmployee(@RequestBody Employee emp) {
-        return ser.createEmployee(emp);
+    // POST /api/employees
+    @PostMapping
+    public Employee createEmployee(@RequestBody Employee employee) {
+        return ser.createEmployee(employee);
     }
 
+    // PUT /api/employees/{id}
     @PutMapping("/{id}")
-    public String update(@PathVariable Long id, @RequestBody Employee emp) {
-
-        Optional<Employee> e = ser.getEmployeeById(id);
-
-        if (e.isPresent()) {
-            emp.setId(id);
-            ser.createEmployee(emp);
-            return "Employee Updated Successfully";
-        }
-
-        return "Employee not found";
+    public Employee updateEmployee(
+            @PathVariable Long id,
+            @RequestBody Employee employee) {
+        return ser.updateEmployee(id, employee);
     }
 
+    // GET /api/employees/{id}
     @GetMapping("/{id}")
-    public Optional<Employee> getEmployeeById(@PathVariable Long id) {
+    public Employee getEmployeeById(@PathVariable Long id) {
         return ser.getEmployeeById(id);
     }
 
-    @GetMapping("/")
+    // GET /api/employees
+    @GetMapping
     public List<Employee> getAllEmployees() {
         return ser.getAllEmployees();
     }
+
+    // PUT /api/employees/{id}/deactivate
+    @PutMapping("/{id}/deactivate")
+    public String deactivateEmployee(@PathVariable Long id) {
+        employeeService.deactivateEmployee(id);
+        return "Employee deactivated successfully";
+    }
+}
+
 
     @PutMapping("/{id}/deactivate")
     public String deactivate(@PathVariable Long id) {
