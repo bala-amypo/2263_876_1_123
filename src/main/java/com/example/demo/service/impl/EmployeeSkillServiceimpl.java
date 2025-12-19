@@ -10,6 +10,7 @@ import com.example.demo.service.EmployeeSkillService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 @Service
 public class EmployeeSkillServiceimpl implements EmployeeSkillService {
 
@@ -17,6 +18,7 @@ public class EmployeeSkillServiceimpl implements EmployeeSkillService {
     private final EmployeeRepository employeeRepository;
     private final SkillRepository skillRepository;
 
+    // REQUIRED CONSTRUCTOR
     public EmployeeSkillServiceimpl(EmployeeSkillRepository employeeSkillRepository,
                                     EmployeeRepository employeeRepository,
                                     SkillRepository skillRepository) {
@@ -25,6 +27,7 @@ public class EmployeeSkillServiceimpl implements EmployeeSkillService {
         this.skillRepository = skillRepository;
     }
 
+    // CREATE
     @Override
     public EmployeeSkill createEmployeeSkill(EmployeeSkill mapping) {
 
@@ -56,16 +59,18 @@ public class EmployeeSkillServiceimpl implements EmployeeSkillService {
             throw new IllegalArgumentException("inactive skill");
         }
 
+        mapping.setActive(true);
         return employeeSkillRepository.save(mapping);
     }
 
+    // UPDATE
     @Override
     public EmployeeSkill updateEmployeeSkill(Long id, EmployeeSkill mapping) {
 
         EmployeeSkill existing = employeeSkillRepository.findById(id)
                 .orElseThrow();
 
-        // Same validations
+        // Same validations as create
         if (mapping.getYearsOfExperience() == null || mapping.getYearsOfExperience() < 0) {
             throw new IllegalArgumentException("Experience years");
         }
@@ -82,20 +87,25 @@ public class EmployeeSkillServiceimpl implements EmployeeSkillService {
         return employeeSkillRepository.save(existing);
     }
 
+    // GET SKILLS FOR EMPLOYEE
     @Override
     public List<EmployeeSkill> getSkillsForEmployee(Long employeeId) {
         return employeeSkillRepository.findByEmployeeIdAndActiveTrue(employeeId);
     }
 
+    // GET EMPLOYEES BY SKILL
     @Override
     public List<EmployeeSkill> getEmployeesBySkill(Long skillId) {
         return employeeSkillRepository.findBySkillIdAndActiveTrue(skillId);
     }
 
+    // DEACTIVATE (PUT ONLY — NO DELETE)
     @Override
     public void deactivateEmployeeSkill(Long id) {
-        EmployeeSkill es = employeeSkillRepository.findById(id).orElseThrow();
-        es.setActive(false);
-        employeeSkillRepository.save(es);
+        EmployeeSkill employeeSkill = employeeSkillRepository.findById(id)
+                .orElseThrow();
+
+        employeeSkill.setActive(false);
+        employeeSkillRepository.save(employeeSkill);
     }
 }
