@@ -1,7 +1,6 @@
 package com.example.demo.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.web.bind.annotation.*;
 
@@ -18,49 +17,30 @@ public class EmployeeSkillController {
         this.service = service;
     }
 
-    @PostMapping("/")
-    public EmployeeSkill createData(@RequestBody EmployeeSkill es) {
-        return service.createData(es);
+    @PostMapping
+    public EmployeeSkill create(@RequestBody EmployeeSkill es) {
+        return service.createEmployeeSkill(es);
     }
 
     @PutMapping("/{id}")
-    public String updateData(@PathVariable Long id,
-                             @RequestBody EmployeeSkill es) {
-
-        Optional<EmployeeSkill> existing = service.fetchById(id);
-
-        if (existing.isPresent()) {
-            es.setId(id);
-            service.createData(es);
-            return "EmployeeSkill updated successfully";
-        } else {
-            return id + " not found";
-        }
+    public EmployeeSkill update(@PathVariable Long id,
+                                @RequestBody EmployeeSkill es) {
+        return service.updateEmployeeSkill(id, es);
     }
 
-    
     @GetMapping("/employee/{employeeId}")
-    public List<EmployeeSkill> fetchByEmployee(@PathVariable Long employeeId) {
-        return service.fetchByEmployee(employeeId);
+    public List<EmployeeSkill> getByEmployee(@PathVariable Long employeeId) {
+        return service.getSkillsForEmployee(employeeId);
     }
 
-    
     @GetMapping("/skill/{skillId}")
-    public List<EmployeeSkill> fetchBySkill(@PathVariable Long skillId) {
-        return service.fetchBySkill(skillId);
+    public List<EmployeeSkill> getBySkill(@PathVariable Long skillId) {
+        return service.getEmployeesBySkill(skillId);
     }
 
     @PutMapping("/{id}/deactivate")
     public String deactivate(@PathVariable Long id) {
-
-        Optional<EmployeeSkill> es = service.fetchById(id);
-
-        if (es.isPresent()) {
-            es.get().setActive(false);
-            service.createData(es.get());
-            return "EmployeeSkill deactivated successfully";
-        } else {
-            return id + " not found";
-        }
+        service.deactivateEmployeeSkill(id);
+        return "EmployeeSkill deactivated successfully";
     }
 }
