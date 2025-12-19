@@ -13,17 +13,17 @@ import com.example.demo.exception.ResourceNotFoundException;
 public class EmployeeServiceImpl implements EmployeeService {
 
    @Autowired
-   EmployeeRepository ser;
+   EmployeeRepository repo;
 
     @Override
     public Employee createEmployee(Employee employee) {
-        employeeRepository.findByEmail(employee.getEmail())
+        repo.findByEmail(employee.getEmail())
                 .ifPresent(e -> {
                     throw new RuntimeException("Email already exists");
                 });
 
         employee.setActive(true); // default active
-        return employeeRepository.save(employee);
+        return repo.save(employee);
     }
 
     @Override
@@ -33,25 +33,25 @@ public class EmployeeServiceImpl implements EmployeeService {
         existing.setName(employee.getName());
         existing.setEmail(employee.getEmail());
 
-        return employeeRepository.save(existing);
+        return repo.save(existing);
     }
 
     @Override
     public Employee getEmployeeById(Long id) {
-        return employeeRepository.findById(id)
+        return repo.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Employee not found"));
     }
 
     @Override
     public List<Employee> getAllEmployees() {
-        return employeeRepository.findByActiveTrue();
+        return repo.findByActiveTrue();
     }
 
     @Override
     public void deactivateEmployee(Long id) {
         Employee employee = getEmployeeById(id);
         employee.setActive(false);
-        employeeRepository.save(employee);
+        repo.save(employee);
     }
 }
 
