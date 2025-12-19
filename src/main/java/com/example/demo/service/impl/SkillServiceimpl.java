@@ -21,21 +21,21 @@ public class SkillServiceimpl implements SkillService {
 
     @Override
     public Skill createSkill(Skill skill) {
-        return repo.save(skill);
+        return skillRepository.save(skill);
     }
 
     @Override
     public List<Skill> getAllSkills() {
-        return repo.findAll();
+        return skillRepository.findAll();
     }
 
     @Override
     public Optional<Skill> getSkillById(Long id) {
-        return repo.findById(id);
+        return skillRepository.findById(id);
     }
 
     @Override
     public void deactivateSkill(Long id) {
-        repo.deleteById(id);
+        skillRepository.deleteById(id);
     }
 }
