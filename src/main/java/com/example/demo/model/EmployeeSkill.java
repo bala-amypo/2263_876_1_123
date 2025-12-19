@@ -19,17 +19,12 @@ public class EmployeeSkill {
     private Skill skill;
 
     public enum ProficiencyLevel {
-        Beginner,
-        Intermediate,
-        Advanced,
-        Expert
+        Beginner, Intermediate, Advanced, Expert
     }
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private ProficiencyLevel proficiencyLevel;
 
-    @Column(nullable = false)
     private Integer yearsOfExperience;
 
     private Boolean active = true;
