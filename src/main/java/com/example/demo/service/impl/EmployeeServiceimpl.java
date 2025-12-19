@@ -15,7 +15,7 @@ public class EmployeeServiceimpl implements EmployeeService {
     private final EmployeeRepository repo;   // constructor injection only
 
     // constructor signature must be exactly (EmployeeRepository)
-    public EmployeeServiceImpl(EmployeeRepository repo) {
+    public EmployeeServiceimpl(EmployeeRepository repo) {
         this.repo = repo;
     }
 
