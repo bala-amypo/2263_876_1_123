@@ -12,17 +12,17 @@ import com.example.demo.service.EmployeeService;
 @Service
 public class EmployeeServiceimpl implements EmployeeService {
 
-    private final EmployeeRepository repo;   // constructor injection only
+    private final EmployeeRepository employeeRepository;   // constructor injection only
 
     // constructor signature must be exactly (EmployeeRepository)
-    public EmployeeServiceimpl(EmployeeRepository repo) {
-        this.repo = repo;
+    public EmployeeServiceimpl(EmployeeRepository employeeRepository) {
+        this.employeeRepository = employeeRepository;
     }
 
     @Override
     public Employee createEmployee(Employee employee) {
         // unique email check, simple if
-        Employee existing = repo.findByEmail(employee.getEmail()).orElse(null);
+        Employee existing = employeeRepository.findByEmail(employee.getEmail()).orElse(null);
         if (existing != null) {
             throw new IllegalArgumentException("Email already exists");
         }
@@ -32,12 +32,12 @@ public class EmployeeServiceimpl implements EmployeeService {
             employee.setActive(true);
         }
 
-        return repo.save(employee);
+        return employeeRepository.save(employee);
     }
 
     @Override
     public Employee updateEmployee(Long id, Employee employee) {
-        Employee existing = repo.findById(id).orElse(null);
+        Employee existing = employeeRepository.findById(id).orElse(null);
         if (existing == null) {
             throw new ResourceNotFoundException("Employee not found");
         }
@@ -51,12 +51,12 @@ public class EmployeeServiceimpl implements EmployeeService {
             existing.setActive(employee.getActive());
         }
 
-        return repo.save(existing);
+        return employeeRepository.save(existing);
     }
 
     @Override
     public Employee getEmployeeById(Long id) {
-        Employee emp = repo.findById(id).orElse(null);
+        Employee emp = employeeRepository.findById(id).orElse(null);
         if (emp == null) {
             throw new ResourceNotFoundException("Employee not found");
         }
@@ -66,13 +66,13 @@ public class EmployeeServiceimpl implements EmployeeService {
     // CHANGE HERE: return all employees, including inactive
     @Override
     public List<Employee> getAllEmployees() {
-        return repo.findAll();
+        return employeeRepository.findAll();
     }
 
     @Override
     public void deactivateEmployee(Long id) {
         Employee employee = getEmployeeById(id);   // throws if not found
         employee.setActive(false);                 // just update flag
-        repo.save(employee);                       // UPDATE, not DELETE
+        employeeRepository.save(employee);                       // UPDATE, not DELETE
     }
 }
