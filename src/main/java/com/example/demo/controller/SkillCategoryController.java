@@ -3,7 +3,7 @@ package com.example.demo.controller;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.*;
-
+import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.SkillCategory;
 import com.example.demo.service.SkillCategoryService;
 
