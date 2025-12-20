@@ -40,11 +40,11 @@ public class EmployeeSkill {
     public EmployeeSkill(Employee employee, Skill skill,
                          ProficiencyLevel proficiencyLevel,
                          Integer yearsOfExperience, Boolean active) {
-        this.employee = employee;
-        this.skill = skill;
-        this.proficiencyLevel = proficiencyLevel;
-        this.yearsOfExperience = yearsOfExperience;
-        this.active = active;
+        setEmployee(employee);
+        setSkill(skill);
+        setProficiencyLevel(proficiencyLevel);
+        setYearsOfExperience(yearsOfExperience);
+        this.active = active != null ? active : true;
     }
 
     // Getters & Setters
@@ -52,16 +52,36 @@ public class EmployeeSkill {
     public void setId(Long id) { this.id = id; }
 
     public Employee getEmployee() { return employee; }
-    public void setEmployee(Employee employee) { this.employee = employee; }
+    public void setEmployee(Employee employee) {
+        if (employee == null || Boolean.FALSE.equals(employee.getActive())) {
+            throw new IllegalArgumentException("inactive employee");
+        }
+        this.employee = employee;
+    }
 
     public Skill getSkill() { return skill; }
-    public void setSkill(Skill skill) { this.skill = skill; }
+    public void setSkill(Skill skill) {
+        if (skill == null || Boolean.FALSE.equals(skill.getActive())) {
+            throw new IllegalArgumentException("inactive skill");
+        }
+        this.skill = skill;
+    }
 
     public ProficiencyLevel getProficiencyLevel() { return proficiencyLevel; }
-    public void setProficiencyLevel(ProficiencyLevel proficiencyLevel) { this.proficiencyLevel = proficiencyLevel; }
+    public void setProficiencyLevel(ProficiencyLevel proficiencyLevel) {
+        if (proficiencyLevel == null) {
+            throw new IllegalArgumentException("Invalid proficiency");
+        }
+        this.proficiencyLevel = proficiencyLevel;
+    }
 
     public Integer getYearsOfExperience() { return yearsOfExperience; }
-    public void setYearsOfExperience(Integer yearsOfExperience) { this.yearsOfExperience = yearsOfExperience; }
+    public void setYearsOfExperience(Integer yearsOfExperience) {
+        if (yearsOfExperience == null || yearsOfExperience < 0) {
+            throw new IllegalArgumentException("Experience years");
+        }
+        this.yearsOfExperience = yearsOfExperience;
+    }
 
     public Boolean getActive() { return active; }
     public void setActive(Boolean active) { this.active = active; }
