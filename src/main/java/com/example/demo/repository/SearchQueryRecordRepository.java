@@ -9,6 +9,5 @@ import java.util.List;
 @Repository
 public interface SearchQueryRecordRepository extends JpaRepository<SearchQueryRecord, Long> {
 
-    // Get all search queries by a user
     List<SearchQueryRecord> findBySearcherId(Long searcherId);
 }
