@@ -24,15 +24,16 @@ public class SkillCategoryServiceimpl implements SkillCategoryService {
         return repo.findAll();
     }
 
-    @Override
+   @Override
     public SkillCategory getCategoryById(Long id) {
 
-    if (skillCategoryRepository.findById(id).isPresent()) {
-        return skillCategoryRepository.findById(id).get();
-    } else {
-        throw new ResourceNotFoundException(
-                "SkillCategory not found with id: " + id
-        );
+        Optional<SkillCategory> category = repo.findById(id);
+
+        if (category.isPresent()) {
+            return category.get();
+        } else {
+            throw new ResourceNotFoundException("SkillCategory not found");
+        }
     }
 }
 
