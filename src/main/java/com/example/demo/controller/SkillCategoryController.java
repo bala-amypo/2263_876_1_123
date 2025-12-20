@@ -57,9 +57,8 @@ public class SkillCategoryController {
             SkillCategory skl = e.get();
             skl.setActive(false);
             ser.createCate(skl);
-            return "SkillCategory Deactivated";
+            
         }
 
-        return id+" not found";
     }
 }
