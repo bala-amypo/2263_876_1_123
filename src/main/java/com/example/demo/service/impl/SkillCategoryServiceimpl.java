@@ -18,7 +18,7 @@ public class SkillCategoryServiceimpl implements SkillCategoryService {
     }
 
     @Override
-    public SkillCategory createCategory(SkillCategory category) {
+    public SkillCategory createCate(SkillCategory category) {
 
         // Check for uniqueness of categoryName
         SkillCategory existing = skillCategoryRepository.findByCategoryName(category.getCategoryName());
@@ -32,7 +32,7 @@ public class SkillCategoryServiceimpl implements SkillCategoryService {
     @Override
     public SkillCategory updateCategory(Long id, SkillCategory category) {
 
-        // Check if category exists
+        // Unwrap Optional using orElse(null)
         SkillCategory existingCategory = skillCategoryRepository.findById(id).orElse(null);
         if (existingCategory == null) {
             throw new IllegalArgumentException("SkillCategory not found");
@@ -52,13 +52,13 @@ public class SkillCategoryServiceimpl implements SkillCategoryService {
     }
 
     @Override
-    public SkillCategory getCategoryById(Long id) {
-        // Properly unwrap Optional
+    public SkillCategory getCateById(Long id) {
+        // Unwrap Optional using orElse(null)
         return skillCategoryRepository.findById(id).orElse(null);
     }
 
     @Override
-    public List<SkillCategory> getAllCategories() {
+    public List<SkillCategory> getAllCate() {
         return skillCategoryRepository.findAll();
     }
 
