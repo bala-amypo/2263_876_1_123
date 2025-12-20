@@ -58,7 +58,9 @@ public class SkillCategoryController {
             skl.setActive(false);
             ser.createCate(skl);
             
-        }
+        } else {
+        throw new ResourceNotFoundException("SkillCategory not found");
+    }
 
     }
 }
