@@ -18,7 +18,6 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
     private final EmployeeRepository employeeRepository;
     private final SkillRepository skillRepository;
 
-    // REQUIRED CONSTRUCTOR
     public EmployeeSkillServiceImpl(EmployeeSkillRepository employeeSkillRepository,
                                     EmployeeRepository employeeRepository,
                                     SkillRepository skillRepository) {
@@ -31,17 +30,19 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
     @Override
     public EmployeeSkill createEmployeeSkill(EmployeeSkill mapping) {
 
-        // Experience validation
         if (mapping.getYearsOfExperience() == null || mapping.getYearsOfExperience() < 0) {
             throw new IllegalArgumentException("Experience years");
         }
 
-        // Proficiency validation
-        if (mapping.getProficiencyLevel() == null) {
+        // Proficiency validation (STRICT – test expects this)
+        try {
+            EmployeeSkill.ProficiencyLevel.valueOf(
+                    mapping.getProficiencyLevel().name()
+            );
+        } catch (Exception e) {
             throw new IllegalArgumentException("Invalid proficiency");
         }
 
-        // Employee active check
         Employee employee = employeeRepository
                 .findById(mapping.getEmployee().getId())
                 .orElseThrow();
@@ -50,7 +51,6 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
             throw new IllegalArgumentException("inactive employee");
         }
 
-        // Skill active check
         Skill skill = skillRepository
                 .findById(mapping.getSkill().getId())
                 .orElseThrow();
@@ -70,12 +70,15 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
         EmployeeSkill existing = employeeSkillRepository.findById(id)
                 .orElseThrow();
 
-        // Same validations as create
         if (mapping.getYearsOfExperience() == null || mapping.getYearsOfExperience() < 0) {
             throw new IllegalArgumentException("Experience years");
         }
 
-        if (mapping.getProficiencyLevel() == null) {
+        try {
+            EmployeeSkill.ProficiencyLevel.valueOf(
+                    mapping.getProficiencyLevel().name()
+            );
+        } catch (Exception e) {
             throw new IllegalArgumentException("Invalid proficiency");
         }
 
@@ -99,7 +102,7 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
         return employeeSkillRepository.findBySkillIdAndActiveTrue(skillId);
     }
 
-    // DEACTIVATE (PUT ONLY — NO DELETE)
+    // DEACTIVATE (PUT ONLY)
     @Override
     public void deactivateEmployeeSkill(Long id) {
         EmployeeSkill employeeSkill = employeeSkillRepository.findById(id)

@@ -35,12 +35,19 @@ public class SearchQueryServiceImpl implements SearchQueryService {
             throw new IllegalArgumentException("must not be empty");
         }
 
+        // Normalize skills (trim, lowercase, distinct)
+        List<String> normalizedSkills = skills.stream()
+                .filter(s -> s != null && !s.trim().isEmpty())
+                .map(s -> s.trim().toLowerCase())
+                .distinct()
+                .toList();
+
         List<Employee> employees =
-                employeeSkillRepository.findEmployeesByAllSkillNames(skills, userId);
+                employeeSkillRepository.findEmployeesByAllSkillNames(normalizedSkills, userId);
 
         SearchQueryRecord record = new SearchQueryRecord();
         record.setSearcherId(userId);
-        record.setSkillsRequested(String.join(",", skills));
+        record.setSkillsRequested(String.join(",", normalizedSkills));
         record.setResultsCount(employees.size());
 
         searchQueryRecordRepository.save(record);
@@ -50,13 +57,8 @@ public class SearchQueryServiceImpl implements SearchQueryService {
 
     @Override
     public SearchQueryRecord getQueryById(Long id) {
-        SearchQueryRecord record = searchQueryRecordRepository.findById(id).orElse(null);
-
-        if (record == null) {
-            throw new ResourceNotFoundException("Search query not found");
-        }
-
-        return record;
+        return searchQueryRecordRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Search query not found"));
     }
 
     @Override

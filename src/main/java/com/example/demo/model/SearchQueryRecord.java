@@ -1,4 +1,5 @@
 package com.example.demo.model;
+
 import java.sql.Timestamp;
 import jakarta.persistence.*;
 
@@ -8,34 +9,45 @@ public class SearchQueryRecord {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;   // PK
+    private Long id;
 
     @Column(nullable = false)
     private Long searcherId;
 
     @Column(nullable = false)
-    private String skillsRequested;   // must not be empty
+    private String skillsRequested;
 
     private Integer resultsCount;
 
-  
     @Column(updatable = false)
-    private Timestamp searchedAt;   // auto on create
-   @PrePersist
+    private Timestamp searchedAt;
+
+    // Auto-set values before insert
+    @PrePersist
     public void onCreate() {
         if (skillsRequested == null || skillsRequested.trim().isEmpty()) {
             throw new IllegalArgumentException("must not be empty");
         }
+
+        if (resultsCount == null) {
+            resultsCount = 0;
+        }
+
         this.searchedAt = new Timestamp(System.currentTimeMillis());
     }
-   
+
+    // Constructors
+    public SearchQueryRecord() {}
+
+    public SearchQueryRecord(Long searcherId, String skillsRequested, Integer resultsCount) {
+        this.searcherId = searcherId;
+        this.skillsRequested = skillsRequested;
+        this.resultsCount = resultsCount;
+    }
+
     // Getters & Setters
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public Long getSearcherId() {
@@ -64,17 +76,5 @@ public class SearchQueryRecord {
 
     public Timestamp getSearchedAt() {
         return searchedAt;
-    }
-    
-    // Parameterized constructor
-    public SearchQueryRecord(Long searcherId, String skillsRequested,
-                             Integer resultsCount) {
-        this.searcherId = searcherId;
-        this.skillsRequested = skillsRequested;
-        this.resultsCount = resultsCount;
-    }
-     // No-arg constructor
-    public SearchQueryRecord() {
-
     }
 }
