@@ -10,11 +10,11 @@ import com.example.demo.service.SkillService;
 import com.example.demo.exception.ResourceNotFoundException;
 
 @Service
-public class SkillServiceimpl implements SkillService {
+public class SkillServiceImpl implements SkillService {
 
     private final SkillRepository skillRepository;
 
-    public SkillServiceimpl(SkillRepository skillRepository) {
+    public SkillServiceImpl(SkillRepository skillRepository) {
         this.skillRepository = skillRepository;
     }
 

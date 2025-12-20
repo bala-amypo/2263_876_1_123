@@ -10,11 +10,11 @@ import com.example.demo.repository.SkillCategoryRepository;
 import com.example.demo.service.SkillCategoryService;
 
 @Service
-public class SkillCategoryServiceimpl implements SkillCategoryService {
+public class SkillCategoryServiceImpl implements SkillCategoryService {
 
     private SkillCategoryRepository skillCategoryRepository;
 
-    public SkillCategoryServiceimpl(SkillCategoryRepository skillCategoryRepository) {
+    public SkillCategoryServiceImpl(SkillCategoryRepository skillCategoryRepository) {
         this.skillCategoryRepository = skillCategoryRepository;
     }
 

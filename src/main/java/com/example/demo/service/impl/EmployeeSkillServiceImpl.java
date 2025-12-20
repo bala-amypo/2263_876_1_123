@@ -12,14 +12,14 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class EmployeeSkillServiceimpl implements EmployeeSkillService {
+public class EmployeeSkillServiceImpl implements EmployeeSkillService {
 
     private final EmployeeSkillRepository employeeSkillRepository;
     private final EmployeeRepository employeeRepository;
     private final SkillRepository skillRepository;
 
     // REQUIRED CONSTRUCTOR
-    public EmployeeSkillServiceimpl(EmployeeSkillRepository employeeSkillRepository,
+    public EmployeeSkillServiceImpl(EmployeeSkillRepository employeeSkillRepository,
                                     EmployeeRepository employeeRepository,
                                     SkillRepository skillRepository) {
         this.employeeSkillRepository = employeeSkillRepository;
