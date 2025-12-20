@@ -18,16 +18,9 @@ public class EmployeeSkill {
     @JoinColumn(name = "skill_id", nullable = false)
     private Skill skill;
 
-    public enum ProficiencyLevel {
-        Beginner,
-        Intermediate,
-        Advanced,
-        Expert
-    }
-
-    @Enumerated(EnumType.STRING)
+    // MUST be String (tests expect String, not enum)
     @Column(nullable = false)
-    private ProficiencyLevel proficiencyLevel;
+    private String proficiencyLevel;
 
     @Column(nullable = false)
     private Integer yearsOfExperience;
@@ -35,54 +28,67 @@ public class EmployeeSkill {
     @Column(nullable = false)
     private Boolean active = true;
 
-    public EmployeeSkill() {}
+    public EmployeeSkill() {
+    }
 
-    public EmployeeSkill(Employee employee, Skill skill,
-                         ProficiencyLevel proficiencyLevel,
-                         Integer yearsOfExperience, Boolean active) {
-        setEmployee(employee);
-        setSkill(skill);
-        setProficiencyLevel(proficiencyLevel);
-        setYearsOfExperience(yearsOfExperience);
-        this.active = active != null ? active : true;
+    public EmployeeSkill(Employee employee,
+                         Skill skill,
+                         String proficiencyLevel,
+                         Integer yearsOfExperience,
+                         Boolean active) {
+        this.employee = employee;
+        this.skill = skill;
+        this.proficiencyLevel = proficiencyLevel;
+        this.yearsOfExperience = yearsOfExperience;
+        this.active = active;
     }
 
     // Getters & Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Long getId() {
+        return id;
+    }
 
-    public Employee getEmployee() { return employee; }
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Employee getEmployee() {
+        return employee;
+    }
+
     public void setEmployee(Employee employee) {
-        if (employee == null || Boolean.FALSE.equals(employee.getActive())) {
-            throw new IllegalArgumentException("inactive employee");
-        }
         this.employee = employee;
     }
 
-    public Skill getSkill() { return skill; }
+    public Skill getSkill() {
+        return skill;
+    }
+
     public void setSkill(Skill skill) {
-        if (skill == null || Boolean.FALSE.equals(skill.getActive())) {
-            throw new IllegalArgumentException("inactive skill");
-        }
         this.skill = skill;
     }
 
-    public ProficiencyLevel getProficiencyLevel() { return proficiencyLevel; }
-    public void setProficiencyLevel(ProficiencyLevel proficiencyLevel) {
-        if (proficiencyLevel == null) {
-            throw new IllegalArgumentException("Invalid proficiency");
-        }
+    public String getProficiencyLevel() {
+        return proficiencyLevel;
+    }
+
+    public void setProficiencyLevel(String proficiencyLevel) {
         this.proficiencyLevel = proficiencyLevel;
     }
 
-    public Integer getYearsOfExperience() { return yearsOfExperience; }
+    public Integer getYearsOfExperience() {
+        return yearsOfExperience;
+    }
+
     public void setYearsOfExperience(Integer yearsOfExperience) {
-        if (yearsOfExperience == null || yearsOfExperience < 0) {
-            throw new IllegalArgumentException("Experience years");
-        }
         this.yearsOfExperience = yearsOfExperience;
     }
 
-    public Boolean getActive() { return active; }
-    public void setActive(Boolean active) { this.active = active; }
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
 }
