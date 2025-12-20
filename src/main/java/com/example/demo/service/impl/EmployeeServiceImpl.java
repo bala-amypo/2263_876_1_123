@@ -10,12 +10,12 @@ import com.example.demo.repository.EmployeeRepository;
 import com.example.demo.service.EmployeeService;
 
 @Service
-public class EmployeeServiceimpl implements EmployeeService {
+public class EmployeeServiceImpl implements EmployeeService {
 
     private final EmployeeRepository employeeRepository;   // constructor injection only
 
     // constructor signature must be exactly (EmployeeRepository)
-    public EmployeeServiceimpl(EmployeeRepository employeeRepository) {
+    public EmployeeServiceImpl(EmployeeRepository employeeRepository) {
         this.employeeRepository = employeeRepository;
     }
 
