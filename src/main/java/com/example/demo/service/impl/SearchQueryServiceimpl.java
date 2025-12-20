@@ -12,12 +12,12 @@ import com.example.demo.repository.SearchQueryRecordRepository;
 import com.example.demo.service.SearchQueryService;
 
 @Service
-public class SearchQueryServiceImpl implements SearchQueryService {
+public class SearchQueryServiceimpl implements SearchQueryService {
 
     private final SearchQueryRecordRepository searchQueryRecordRepository;
     private final EmployeeSkillRepository employeeSkillRepository;
 
-    public SearchQueryServiceImpl(SearchQueryRecordRepository searchQueryRecordRepository,
+    public SearchQueryServiceimpl(SearchQueryRecordRepository searchQueryRecordRepository,
                                   EmployeeSkillRepository employeeSkillRepository) {
         this.searchQueryRecordRepository = searchQueryRecordRepository;
         this.employeeSkillRepository = employeeSkillRepository;
