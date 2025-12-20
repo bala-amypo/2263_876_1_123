@@ -1,7 +1,7 @@
 package com.example.demo.service.impl;
 
-import java.util.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.example.demo.model.SkillCategory;
@@ -11,20 +11,46 @@ import com.example.demo.service.SkillCategoryService;
 @Service
 public class SkillCategoryServiceimpl implements SkillCategoryService {
 
-    
-    SkillCategoryRepository skillCategoryRepository;
-    public SkillCategoryServiceimpl(SkillCategoryRepository skillCategoryRepository){
+    private final SkillCategoryRepository skillCategoryRepository;
+
+    public SkillCategoryServiceimpl(SkillCategoryRepository skillCategoryRepository) {
         this.skillCategoryRepository = skillCategoryRepository;
     }
 
     @Override
     public SkillCategory createCategory(SkillCategory category) {
+
+        // Check for uniqueness of categoryName
+        SkillCategory existing = skillCategoryRepository.findByCategoryName(category.getCategoryName());
+        if (existing != null) {
+            throw new IllegalArgumentException("Category name must be unique");
+        }
+
+        // Save category
         return skillCategoryRepository.save(category);
     }
+
     @Override
     public SkillCategory updateCategory(Long id, SkillCategory category) {
-        category.setId(id);
-        return skillCategoryRepository.save(category);
+
+        // Check if category exists
+        SkillCategory existingCategory = skillCategoryRepository.findById(id).orElse(null);
+        if (existingCategory == null) {
+            throw new IllegalArgumentException("SkillCategory not found");
+        }
+
+        // Check uniqueness of categoryName (exclude current id)
+        SkillCategory byName = skillCategoryRepository.findByCategoryName(category.getCategoryName());
+        if (byName != null && !byName.getId().equals(id)) {
+            throw new IllegalArgumentException("Category name must be unique");
+        }
+
+        // Update fields
+        existingCategory.setCategoryName(category.getCategoryName());
+        existingCategory.setDescription(category.getDescription());
+        existingCategory.setActive(category.getActive());
+
+        return skillCategoryRepository.save(existingCategory);
     }
 
     @Override
