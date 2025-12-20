@@ -1,48 +1,41 @@
 package com.example.demo.controller;
 
+import java.util.List;
+
+import org.springframework.web.bind.annotation.*;
+
 import com.example.demo.dto.EmployeeSearchRequest;
+import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.Employee;
 import com.example.demo.model.SearchQueryRecord;
 import com.example.demo.service.SearchQueryService;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/search")
-@Tag(name = "Search Queries", description = "Search employees by skills")
 public class SearchQueryController {
 
-    private final SearchQueryService searchQueryService;
+    private final SearchQueryService service;
 
-    // Constructor injection (TestNG-compliant)
-    public SearchQueryController(SearchQueryService searchQueryService) {
-        this.searchQueryService = searchQueryService;
+    public SearchQueryController(SearchQueryService service) {
+        this.service = service;
     }
 
-    // POST /api/search/employees
     @PostMapping("/employees")
-    public ResponseEntity<List<Employee>> searchEmployees(@RequestBody EmployeeSearchRequest request) {
-        List<Employee> employees = searchQueryService.searchEmployeesBySkills(
+    public List<Employee> searchEmployees(@RequestBody EmployeeSearchRequest request) {
+
+        return service.searchEmployeesBySkills(
                 request.getSkills(),
                 request.getUserId()
         );
-        return ResponseEntity.ok(employees);
     }
 
-    // GET /api/search/{id}
     @GetMapping("/{id}")
-    public ResponseEntity<SearchQueryRecord> getQueryById(@PathVariable Long id) {
-        SearchQueryRecord record = searchQueryService.getQueryById(id);
-        return ResponseEntity.ok(record);
+    public SearchQueryRecord getQueryById(@PathVariable Long id) {
+        return service.getQueryById(id);
     }
 
-    // GET /api/search/user/{userId}
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<SearchQueryRecord>> getQueriesForUser(@PathVariable Long userId) {
-        List<SearchQueryRecord> records = searchQueryService.getQueriesForUser(userId);
-        return ResponseEntity.ok(records);
+    public List<SearchQueryRecord> getQueriesForUser(@PathVariable Long userId) {
+        return service.getQueriesForUser(userId);
     }
 }
