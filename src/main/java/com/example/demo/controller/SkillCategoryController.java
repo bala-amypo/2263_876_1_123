@@ -17,13 +17,11 @@ public class SkillCategoryController {
         this.ser = ser;
     }
 
-    // POST /
     @PostMapping("/")
     public SkillCategory createCategory(@RequestBody SkillCategory category) {
         return ser.createCategory(category);
     }
 
-    // PUT /{id}
     @PutMapping("/{id}")
     public String updateCategory(@PathVariable Long id,
                                  @RequestBody SkillCategory category) {
@@ -38,7 +36,7 @@ public class SkillCategoryController {
         }
     }
 
-    // GET /{id}
+
     @GetMapping("/{id}")
     public SkillCategory getCategoryById(@PathVariable Long id) {
 
@@ -51,13 +49,11 @@ public class SkillCategoryController {
         }
     }
 
-    // GET /
     @GetMapping("/")
     public List<SkillCategory> getAllCategories() {
         return ser.getAllCategories();
     }
 
-    // PUT /{id}/deactivate
     @PutMapping("/{id}/deactivate")
     public String deactivateCategory(@PathVariable Long id) {
 
