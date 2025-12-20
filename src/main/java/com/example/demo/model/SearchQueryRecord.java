@@ -22,32 +22,22 @@ public class SearchQueryRecord {
     @Column(updatable = false)
     private Timestamp searchedAt;
 
-    // Auto-set values before insert
     @PrePersist
     public void onCreate() {
         if (skillsRequested == null || skillsRequested.trim().isEmpty()) {
             throw new IllegalArgumentException("must not be empty");
         }
-
-        if (resultsCount == null) {
-            resultsCount = 0;
-        }
-
         this.searchedAt = new Timestamp(System.currentTimeMillis());
     }
 
-    // Constructors
-    public SearchQueryRecord() {}
-
-    public SearchQueryRecord(Long searcherId, String skillsRequested, Integer resultsCount) {
-        this.searcherId = searcherId;
-        this.skillsRequested = skillsRequested;
-        this.resultsCount = resultsCount;
-    }
-
-    // Getters & Setters
+    // ✅ REQUIRED BY TESTS
     public Long getId() {
         return id;
+    }
+
+    // 🔥 THIS WAS MISSING
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getSearcherId() {
@@ -76,5 +66,14 @@ public class SearchQueryRecord {
 
     public Timestamp getSearchedAt() {
         return searchedAt;
+    }
+
+    // constructors
+    public SearchQueryRecord() {}
+
+    public SearchQueryRecord(Long searcherId, String skillsRequested, Integer resultsCount) {
+        this.searcherId = searcherId;
+        this.skillsRequested = skillsRequested;
+        this.resultsCount = resultsCount;
     }
 }
