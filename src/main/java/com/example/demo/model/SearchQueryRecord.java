@@ -1,7 +1,7 @@
 package com.example.demo.model;
 import java.sql.Timestamp;
 
-import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.*;
 
 import jakarta.persistence.*;
 
@@ -21,10 +21,16 @@ public class SearchQueryRecord {
 
     private Integer resultsCount;
 
-    @CreationTimestamp
+  
     @Column(updatable = false)
     private Timestamp searchedAt;   // auto on create
-
+   @PrePersist
+    public void onCreate() {
+        if (skillsRequested == null || skillsRequested.trim().isEmpty()) {
+            throw new IllegalArgumentException("must not be empty");
+        }
+        this.searchedAt = new Timestamp(System.currentTimeMillis());
+    }
    
     // Getters & Setters
     public Long getId() {
