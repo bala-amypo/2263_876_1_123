@@ -11,23 +11,24 @@ import com.example.demo.service.SkillCategoryService;
 @Service
 public class SkillCategoryServiceimpl implements SkillCategoryService {
 
-    @Autowired
-    SkillCategoryRepository repo;
+    
+    SkillCategoryRepository skillCategoryRepository;
+    public SkillCategoryServiceimpl(SkillCategoryRepository skillCategoryRepository){
+        this.skillCategoryRepository = skillCategoryRepository;
+    }
 
     @Override
     public SkillCategory createCategory(SkillCategory category) {
-        return repo.save(category);
+        return skillCategoryRepository.save(category);
     }
 
     @Override
     public List<SkillCategory> getAllCategories() {
-        return repo.findAll();
+        return skillCategoryRepository.findAll();
     }
 
    @Override
     public SkillCategory getCategoryById(Long id) {
-        repo.findById(id);
+        return skillCategoryRepository.findById(id);
     }
-}
-
 }
