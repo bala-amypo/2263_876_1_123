@@ -1,6 +1,6 @@
 package com.example.demo.model;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 import java.util.List;
 
 import jakarta.persistence.*;
@@ -20,19 +20,21 @@ public class Employee {
 
     private String department;
     private String jobTitle;
+
     private Boolean active;
 
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    @Column(updatable = false)
+    private Timestamp createdAt;
+
+    private Timestamp updatedAt;
 
     @OneToMany(mappedBy = "employee")
     private List<EmployeeSkill> employeeSkills;
 
-    // ---------- Lifecycle methods (REQUIRED by tests) ----------
 
     @PrePersist
     public void onCreate() {
-        this.createdAt = LocalDateTime.now();
+        this.createdAt = new Timestamp(System.currentTimeMillis());
         if (this.active == null) {
             this.active = true;
         }
@@ -40,10 +42,9 @@ public class Employee {
 
     @PreUpdate
     public void onUpdate() {
-        this.updatedAt = LocalDateTime.now();
+        this.updatedAt = new Timestamp(System.currentTimeMillis());
     }
 
-    // ---------- Getters & Setters ----------
 
     public Long getId() {
         return id;
@@ -93,23 +94,25 @@ public class Employee {
         this.active = active;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public Timestamp getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
     }
 
-    public LocalDateTime getUpdatedAt() {
+    public Timestamp getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(LocalDateTime updatedAt) {
+    public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
     }
 
-    // ---------- Constructors ----------
+
+    public Employee() {
+    }
 
     public Employee(String fullName, String email, String department,
                     String jobTitle, Boolean active) {
@@ -118,8 +121,5 @@ public class Employee {
         this.department = department;
         this.jobTitle = jobTitle;
         this.active = active;
-    }
-
-    public Employee() {
     }
 }
