@@ -19,14 +19,14 @@ public class SkillCategoryController {
     }
 
     @PostMapping("/")
-    public SkillCategory createCate(@RequestBody SkillCategory skl) {
-        return ser.createCate(skl);
+    public SkillCategory createCategory(@RequestBody SkillCategory category) {
+        return ser.createCate(category);
     }
 
     @PutMapping("/{id}")
-    public String update(@PathVariable Long id, @RequestBody SkillCategory skl) {
+    public String updateCategory(@PathVariable Long id, @RequestBody SkillCategory category) {
 
-        Optional<SkillCategory> e = ser.getCateById(id);
+        Optional<SkillCategory> e = ser.getCategoryById(id);
 
         if (e.isPresent()) {
             skl.setId(id);

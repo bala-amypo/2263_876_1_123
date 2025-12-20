@@ -20,12 +20,12 @@ public class SkillCategoryServiceimpl implements SkillCategoryService {
     }
 
     @Override
-    public List<SkillCategory> getAllCate() {
+    public List<SkillCategory> getAllCategories() {
         return repo.findAll();
     }
 
     @Override
-    public Optional<SkillCategory> getCateById(Long id) {
+    public Optional<SkillCategory> getCategoryById(Long id) {
         return repo.findById(id);
     }
 }
