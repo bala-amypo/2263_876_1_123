@@ -21,14 +21,28 @@ public class SkillCategoryServiceimpl implements SkillCategoryService {
     public SkillCategory createCategory(SkillCategory category) {
         return skillCategoryRepository.save(category);
     }
+    @Override
+    public SkillCategory updateCategory(Long id, SkillCategory category) {
+        category.setId(id);
+        return skillCategoryRepository.save(category);
+    }
+
+    @Override
+    public SkillCategory getCategoryById(Long id) {
+        return skillCategoryRepository.findById(id).orElse(null);
+    }
 
     @Override
     public List<SkillCategory> getAllCategories() {
         return skillCategoryRepository.findAll();
     }
 
-   @Override
-    public SkillCategory getCategoryById(Long id) {
-        return skillCategoryRepository.findById(id);
+    @Override
+    public void deactivateCategory(Long id) {
+        SkillCategory cat = skillCategoryRepository.findById(id).orElse(null);
+        if (cat != null) {
+            cat.setActive(false);
+            skillCategoryRepository.save(cat);
+        }
     }
 }

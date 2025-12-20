@@ -1,7 +1,6 @@
 package com.example.demo.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.web.bind.annotation.*;
 
@@ -18,49 +17,57 @@ public class SkillCategoryController {
         this.ser = ser;
     }
 
+    // POST /
     @PostMapping("/")
     public SkillCategory createCategory(@RequestBody SkillCategory category) {
-        return ser.createCate(category);
+        return ser.createCategory(category);
     }
 
+    // PUT /{id}
     @PutMapping("/{id}")
-    public String updateCategory(@PathVariable Long id, @RequestBody SkillCategory skl) {
+    public String updateCategory(@PathVariable Long id,
+                                 @RequestBody SkillCategory category) {
 
-    Optional<SkillCategory> e = ser.getCategoryById(id);
+        SkillCategory existing = ser.getCategoryById(id);
 
-    if (e.isPresent()) {
-        skl.setId(id);              // ensure update, not new insert
-        ser.createCategory(skl);    // save updated data
-        return "SkillCategory Updated Successfully";
-    } else {
-        throw new ResourceNotFoundException("SkillCategory not found");
-    }
-}
-
-
-    @GetMapping("/{id}")
-    public Optional<SkillCategory> getCateById(@PathVariable Long id) {
-        return ser.getCateById(id);
-    }
-
-    @GetMapping("/")
-    public List<SkillCategory> getAllCate() {
-        return ser.getAllCate();
-    }
-
-    @PutMapping("/{id}/deactivate")
-    public void deactivate(@PathVariable Long id) {
-
-        Optional<SkillCategory> e = ser.getCateById(id);
-
-        if (e.isPresent()) {
-            SkillCategory skl = e.get();
-            skl.setActive(false);
-            ser.createCate(skl);
-            
+        if (existing != null) {
+            ser.updateCategory(id, category);
+            return "SkillCategory Updated Successfully";
         } else {
-        throw new ResourceNotFoundException("SkillCategory not found");
+            throw new ResourceNotFoundException("SkillCategory not found");
+        }
     }
 
+    // GET /{id}
+    @GetMapping("/{id}")
+    public SkillCategory getCategoryById(@PathVariable Long id) {
+
+        SkillCategory cat = ser.getCategoryById(id);
+
+        if (cat != null) {
+            return cat;
+        } else {
+            throw new ResourceNotFoundException("SkillCategory not found");
+        }
+    }
+
+    // GET /
+    @GetMapping("/")
+    public List<SkillCategory> getAllCategories() {
+        return ser.getAllCategories();
+    }
+
+    // PUT /{id}/deactivate
+    @PutMapping("/{id}/deactivate")
+    public String deactivateCategory(@PathVariable Long id) {
+
+        SkillCategory cat = ser.getCategoryById(id);
+
+        if (cat != null) {
+            ser.deactivateCategory(id);
+            return "SkillCategory Deactivated";
+        } else {
+            throw new ResourceNotFoundException("SkillCategory not found");
+        }
     }
 }
