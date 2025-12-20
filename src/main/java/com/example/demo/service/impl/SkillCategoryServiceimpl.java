@@ -26,7 +26,6 @@ public class SkillCategoryServiceimpl implements SkillCategoryService {
             throw new IllegalArgumentException("Category name must be unique");
         }
 
-        // Save category
         return skillCategoryRepository.save(category);
     }
 
@@ -39,13 +38,12 @@ public class SkillCategoryServiceimpl implements SkillCategoryService {
             throw new IllegalArgumentException("SkillCategory not found");
         }
 
-        // Check uniqueness of categoryName (exclude current id)
+        // Check uniqueness of categoryName (excluding current record)
         SkillCategory byName = skillCategoryRepository.findByCategoryName(category.getCategoryName());
         if (byName != null && !byName.getId().equals(id)) {
             throw new IllegalArgumentException("Category name must be unique");
         }
 
-        // Update fields
         existingCategory.setCategoryName(category.getCategoryName());
         existingCategory.setDescription(category.getDescription());
         existingCategory.setActive(category.getActive());
@@ -55,6 +53,7 @@ public class SkillCategoryServiceimpl implements SkillCategoryService {
 
     @Override
     public SkillCategory getCategoryById(Long id) {
+        // Properly unwrap Optional
         return skillCategoryRepository.findById(id).orElse(null);
     }
 
