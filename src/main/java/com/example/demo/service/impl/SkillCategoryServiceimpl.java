@@ -18,7 +18,7 @@ public class SkillCategoryServiceimpl implements SkillCategoryService {
     }
 
     @Override
-    public SkillCategory createCate(SkillCategory category) {
+    public SkillCategory createCategory(SkillCategory category) {
 
         // Check for uniqueness of categoryName
         SkillCategory existing = skillCategoryRepository.findByCategoryName(category.getCategoryName());
@@ -52,13 +52,13 @@ public class SkillCategoryServiceimpl implements SkillCategoryService {
     }
 
     @Override
-    public SkillCategory getCateById(Long id) {
+    public SkillCategory getCategoryById(Long id) {
         // Unwrap Optional using orElse(null)
         return skillCategoryRepository.findById(id).orElse(null);
     }
 
     @Override
-    public List<SkillCategory> getAllCate() {
+    public List<SkillCategory> getAllCategories() {
         return skillCategoryRepository.findAll();
     }
 
