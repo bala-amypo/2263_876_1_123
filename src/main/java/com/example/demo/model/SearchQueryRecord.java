@@ -24,18 +24,24 @@ public class SearchQueryRecord {
 
     @PrePersist
     public void onCreate() {
+
         if (skillsRequested == null || skillsRequested.trim().isEmpty()) {
             throw new IllegalArgumentException("must not be empty");
         }
+
+        // 🔥 THIS LINE FIXES THE LAST TEST
+        if (resultsCount == null) {
+            resultsCount = 0;
+        }
+
         this.searchedAt = new Timestamp(System.currentTimeMillis());
     }
 
-    // ✅ REQUIRED BY TESTS
+    // getters & setters
     public Long getId() {
         return id;
     }
 
-    // 🔥 THIS WAS MISSING
     public void setId(Long id) {
         this.id = id;
     }
@@ -68,7 +74,6 @@ public class SearchQueryRecord {
         return searchedAt;
     }
 
-    // constructors
     public SearchQueryRecord() {}
 
     public SearchQueryRecord(Long searcherId, String skillsRequested, Integer resultsCount) {
