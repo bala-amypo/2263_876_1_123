@@ -6,7 +6,7 @@ import java.util.List;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import com.example.demo.entity.EmployeeSkill;
+import com.example.demo.model.EmployeeSkill;
 
 import jakarta.persistence.*;
 
