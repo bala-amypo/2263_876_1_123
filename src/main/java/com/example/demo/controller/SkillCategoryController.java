@@ -47,18 +47,18 @@ public class SkillCategoryController {
         return ser.getAllCate();
     }
 
-    @PutMapping("/{id}/deactivate")
-    public String deactivate(@PathVariable Long id) {
+  @PutMapping("/{id}/deactivate")
+   public String deactivate(@PathVariable Long id) {
 
-        Optional<SkillCategory> e = ser.getCateById(id);
+    Optional<SkillCategory> e = ser.getCateById(id);
 
-        if (e.isPresent()) {
-            SkillCategory skl = e.get();
-            skl.setActive(false);
-            ser.createCate(skl);
-            return "SkillCategory Deactivated";
-        }
-
-        return id+" not found";
+    if (e.isPresent()) {
+        SkillCategory skl = e.get();
+        skl.setActive(false);
+        ser.createCategory(skl);
+        return "SkillCategory Deactivated";
+    } else {
+        throw new ResourceNotFoundException("SkillCategory not found");
     }
+}
 }
