@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import java.util.List;
+import java.util.*;
 
 import org.springframework.web.bind.annotation.*;
 import com.example.demo.exception.ResourceNotFoundException;
@@ -26,10 +26,11 @@ public class SkillCategoryController {
     public String updateCategory(@PathVariable Long id,
                                  @RequestBody SkillCategory category) {
 
-        SkillCategory existing = ser.getCategoryById(id);
+        Optional<SkillCategory> existing = ser.getCategoryById(id);
 
-        if (existing.isPresent) {
-            ser.updateCategory(id, category);
+        if (existing.isPresent()) {
+            category
+            ser.createCategory(id, category);
             return "SkillCategory Updated Successfully";
         } else {
             throw new ResourceNotFoundException("SkillCategory not found");
