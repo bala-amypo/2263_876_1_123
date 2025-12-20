@@ -1,8 +1,6 @@
 package com.example.demo.model;
-
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
-
 import jakarta.persistence.*;
 
 @Entity
@@ -32,19 +30,24 @@ public class Employee {
     private List<EmployeeSkill> employeeSkills;
 
 
-    @PrePersist
-    public void onCreate() {
-        this.createdAt = new Timestamp(System.currentTimeMillis());
-        if (this.active == null) {
-            this.active = true;
-        }
-    }
+   private LocalDateTime createdAt;
+   private LocalDateTime updatedAt;
 
-    @PreUpdate
-    public void onUpdate() {
-        this.updatedAt = new Timestamp(System.currentTimeMillis());
-    }
+public LocalDateTime getCreatedAt() {
+    return createdAt;
+}
 
+public void setCreatedAt(LocalDateTime createdAt) {
+    this.createdAt = createdAt;
+}
+
+public LocalDateTime getUpdatedAt() {
+    return updatedAt;
+}
+
+public void setUpdatedAt(LocalDateTime updatedAt) {
+    this.updatedAt = updatedAt;
+}
 
     public Long getId() {
         return id;
