@@ -1,8 +1,12 @@
 package com.example.demo.model;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+
+import com.example.demo.entity.EmployeeSkill;
 
 import jakarta.persistence.*;
 
@@ -16,20 +20,31 @@ public class Employee {
 
     private String fullName;
 
-    @Column(nullable = false, unique = true)
-    private String email;   // UNIQUE
+    @Column(unique = true)
+    private String email;
 
     private String department;
-
     private String jobTitle;
+    private Boolean active;
 
-    private Boolean active = true;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
-    @CreationTimestamp
-    private Timestamp createdAt;
+    @OneToMany(mappedBy = "employee")
+    private List<EmployeeSkill> employeeSkills;
 
-    @UpdateTimestamp
-    private Timestamp updatedAt;
+    @PrePersist
+    public void onCreate() {
+        this.createdAt = LocalDateTime.now();
+        if (this.active == null) {
+            this.active = true;
+        }
+    }
+
+    @PreUpdate
+    public void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
 
  public Long getId() {
     return id;
