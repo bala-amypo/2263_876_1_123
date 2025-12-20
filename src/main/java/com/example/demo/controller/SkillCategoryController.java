@@ -24,18 +24,19 @@ public class SkillCategoryController {
     }
 
     @PutMapping("/{id}")
-    public String updateCategory(@PathVariable Long id, @RequestBody SkillCategory category) {
+    public String updateCategory(@PathVariable Long id, @RequestBody SkillCategory skl) {
 
-        Optional<SkillCategory> e = ser.getCategoryById(id);
+    Optional<SkillCategory> e = ser.getCategoryById(id);
 
-        if (e.isPresent()) {
-            skl.setId(id);
-            ser.createCate(skl);
-            return "SkillCategory Updated Successfully";
-        }
-
-        return id+" not found";
+    if (e.isPresent()) {
+        skl.setId(id);              // ensure update, not new insert
+        ser.createCategory(skl);    // save updated data
+        return "SkillCategory Updated Successfully";
+    } else {
+        throw new ResourceNotFoundException("SkillCategory not found");
     }
+}
+
 
     @GetMapping("/{id}")
     public Optional<SkillCategory> getCateById(@PathVariable Long id) {
@@ -47,18 +48,18 @@ public class SkillCategoryController {
         return ser.getAllCate();
     }
 
-  @PutMapping("/{id}/deactivate")
-   public String deactivate(@PathVariable Long id) {
+    @PutMapping("/{id}/deactivate")
+    public void deactivate(@PathVariable Long id) {
 
-    Optional<SkillCategory> e = ser.getCateById(id);
+        Optional<SkillCategory> e = ser.getCateById(id);
 
-    if (e.isPresent()) {
-        SkillCategory skl = e.get();
-        skl.setActive(false);
-        ser.createCategory(skl);
-        return "SkillCategory Deactivated";
-    } else {
-        throw new ResourceNotFoundException("SkillCategory not found");
+        if (e.isPresent()) {
+            SkillCategory skl = e.get();
+            skl.setActive(false);
+            ser.createCate(skl);
+            return "SkillCategory Deactivated";
+        }
+
+        return id+" not found";
     }
-}
 }
