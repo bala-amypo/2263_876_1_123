@@ -1,8 +1,5 @@
 package com.example.demo.model;
 import java.sql.Timestamp;
-
-import org.hibernate.annotations.*;
-
 import jakarta.persistence.*;
 
 @Entity
