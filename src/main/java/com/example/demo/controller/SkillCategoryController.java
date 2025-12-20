@@ -28,7 +28,7 @@ public class SkillCategoryController {
 
         SkillCategory existing = ser.getCategoryById(id);
 
-        if (existing != null) {
+        if (existing.isPresent) {
             ser.updateCategory(id, category);
             return "SkillCategory Updated Successfully";
         } else {
