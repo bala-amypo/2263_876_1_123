@@ -15,8 +15,8 @@ public class SkillCategoryServiceimpl implements SkillCategoryService {
     SkillCategoryRepository repo;
 
     @Override
-    public SkillCategory createCate(SkillCategory skl) {
-        return repo.save(skl);
+    public SkillCategory createCategory(SkillCategory category) {
+        return repo.save(category);
     }
 
     @Override
