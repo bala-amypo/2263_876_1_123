@@ -6,46 +6,34 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.Employee;
-import com.example.demo.model.EmployeeSkill;
-import com.example.demo.repository.SkillRepository;
 import com.example.demo.repository.EmployeeRepository;
 import com.example.demo.service.EmployeeService;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
-    private final EmployeeRepository employeeRepository;
-    private final SkillRepository skillRepository; 
+    private final EmployeeRepository employeeRepository; // constructor injection
 
-    public EmployeeServiceImpl(EmployeeRepository employeeRepository, SkillRepository skillRepository) {
+    // Constructor for test class and Spring
+    public EmployeeServiceImpl(EmployeeRepository employeeRepository) {
         this.employeeRepository = employeeRepository;
-        this.skillRepository = skillRepository;
     }
 
     @Override
     public Employee createEmployee(Employee employee) {
-        if (employeeRepository.findByEmail(employee.getEmail()).isPresent()) {
+        // unique email check
+        Employee existing = employeeRepository.findByEmail(employee.getEmail()).orElse(null);
+        if (existing != null) {
             throw new IllegalArgumentException("Email already exists");
         }
 
-        if (employee.getActive() == null) employee.setActive(true);
-
-        if (employee.getEmployeeSkills() != null) {
-            for (EmployeeSkill es : employee.getEmployeeSkills()) {
-                es.setEmployee(employee);
-
-                Long skillId = es.getSkill().getId();
-                es.setSkill(
-                    skillRepository.findById(skillId)
-                        .orElseThrow(() -> new IllegalArgumentException("Skill ID not found: " + skillId))
-                );
-            }
+        // default active = true if not set
+        if (employee.getActive() == null) {
+            employee.setActive(true);
         }
 
         return employeeRepository.save(employee);
     }
-
-
 
     @Override
     public Employee updateEmployee(Long id, Employee employee) {
@@ -68,14 +56,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee getEmployeeById(Long id) {
-        Employee emp = employeeRepository.findById(id).orElse(null);
-        if (emp == null) {
-            throw new ResourceNotFoundException("Employee not found");
-        }
-        return emp;
+        return employeeRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Employee not found"));
     }
 
-    // CHANGE HERE: return all employees, including inactive
     @Override
     public List<Employee> getAllEmployees() {
         return employeeRepository.findAll();
@@ -83,8 +67,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public void deactivateEmployee(Long id) {
-        Employee employee = getEmployeeById(id);   // throws if not found
-        employee.setActive(false);                 // just update flag
-        employeeRepository.save(employee);                       // UPDATE, not DELETE
+        Employee employee = getEmployeeById(id);
+        employee.setActive(false);
+        employeeRepository.save(employee);
     }
 }
