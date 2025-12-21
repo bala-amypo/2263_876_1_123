@@ -74,24 +74,8 @@ public class EmployeeSkill {
     }
 
     public void setProficiencyLevel(String proficiencyLevel) {
-
-    if (proficiencyLevel == null) {
-        throw new IllegalArgumentException("Proficiency level cannot be null");
+        this.proficiencyLevel = proficiencyLevel;
     }
-
-    String level = proficiencyLevel.trim();
-
-    if (!(level.equalsIgnoreCase("Beginner") ||
-          level.equalsIgnoreCase("Intermediate") ||
-          level.equalsIgnoreCase("Advanced") ||
-          level.equalsIgnoreCase("Expert"))) {
-
-        throw new IllegalArgumentException("Invalid proficiency level");
-    }
-
-    this.proficiencyLevel = level;
-}
-
 
     public Integer getYearsOfExperience() {
         return yearsOfExperience;
