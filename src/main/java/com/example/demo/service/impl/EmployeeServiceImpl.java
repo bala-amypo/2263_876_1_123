@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.Employee;
 import com.example.demo.model.EmployeeSkill;
+import com.example.demo.repository.SkillRepository;
 import com.example.demo.repository.EmployeeRepository;
 import com.example.demo.service.EmployeeService;
 
