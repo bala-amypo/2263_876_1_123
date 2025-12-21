@@ -14,7 +14,7 @@ public class EmployeeSkill {
    @JoinColumn(name = "employee_id", nullable = false)
    private Employee employee;
 
-   @ManyToOne(cascade = CascadeType.ALL)
+   @ManyToOne(cascade = CascadeType.PERSIST)
    @JoinColumn(name = "skill_id", nullable = false)
    private Skill skill;
 
