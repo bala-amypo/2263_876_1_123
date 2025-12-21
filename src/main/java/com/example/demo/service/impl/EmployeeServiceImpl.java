@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.Employee;
+import com.example.demo.model.EmployeeSkill;
 import com.example.demo.repository.EmployeeRepository;
 import com.example.demo.service.EmployeeService;
 
@@ -18,22 +19,26 @@ public class EmployeeServiceImpl implements EmployeeService {
     public EmployeeServiceImpl(EmployeeRepository employeeRepository) {
         this.employeeRepository = employeeRepository;
     }
-
-    @Override
-    public Employee createEmployee(Employee employee) {
-        // unique email check, simple if
-        Employee existing = employeeRepository.findByEmail(employee.getEmail()).orElse(null);
-        if (existing != null) {
-            throw new IllegalArgumentException("Email already exists");
-        }
-
-        // default active = true if not set
-        if (employee.getActive() == null) {
-            employee.setActive(true);
-        }
-
-        return employeeRepository.save(employee);
+@Override
+public Employee createEmployee(Employee employee) {
+    Employee existing = employeeRepository.findByEmail(employee.getEmail()).orElse(null);
+    if (existing != null) {
+        throw new IllegalArgumentException("Email already exists");
     }
+
+    if (employee.getActive() == null) {
+        employee.setActive(true);
+    }
+
+    if (employee.getEmployeeSkills() != null) {
+        for (EmployeeSkill es : employee.getEmployeeSkills()) {
+            es.setEmployee(employee);
+        }
+    }
+
+    return employeeRepository.save(employee);
+}
+
 
     @Override
     public Employee updateEmployee(Long id, Employee employee) {
