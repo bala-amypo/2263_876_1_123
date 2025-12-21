@@ -10,14 +10,13 @@ public class EmployeeSkill {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JsonIgnore  
-    @JoinColumn(name = "employee_id", nullable = false)
-    private Employee employee;
+   @ManyToOne
+   @JoinColumn(name = "employee_id", nullable = false)
+   private Employee employee;
 
-    @ManyToOne
-    @JoinColumn(name = "skill_id", nullable = false)
-    private Skill skill;
+   @ManyToOne(cascade = CascadeType.ALL)
+   @JoinColumn(name = "skill_id", nullable = false)
+   private Skill skill;
 
     // MUST be String (tests expect String, not enum)
     @Column(nullable = false)
