@@ -1,9 +1,7 @@
 package com.example.demo.service.impl;
 
 import java.util.List;
-
 import org.springframework.stereotype.Service;
-
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.Employee;
 import com.example.demo.repository.EmployeeRepository;
@@ -11,27 +9,21 @@ import com.example.demo.service.EmployeeService;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
+    private final EmployeeRepository employeeRepository;
 
-    private final EmployeeRepository employeeRepository; // constructor injection
-
-    // Constructor for test class and Spring
     public EmployeeServiceImpl(EmployeeRepository employeeRepository) {
         this.employeeRepository = employeeRepository;
     }
 
     @Override
     public Employee createEmployee(Employee employee) {
-        // unique email check
         Employee existing = employeeRepository.findByEmail(employee.getEmail()).orElse(null);
         if (existing != null) {
             throw new IllegalArgumentException("Email already exists");
         }
-
-        // default active = true if not set
         if (employee.getActive() == null) {
             employee.setActive(true);
         }
-
         return employeeRepository.save(employee);
     }
 
@@ -41,23 +33,23 @@ public class EmployeeServiceImpl implements EmployeeService {
         if (existing == null) {
             throw new ResourceNotFoundException("Employee not found");
         }
-
         existing.setFullName(employee.getFullName());
         existing.setEmail(employee.getEmail());
         existing.setDepartment(employee.getDepartment());
         existing.setJobTitle(employee.getJobTitle());
-
         if (employee.getActive() != null) {
             existing.setActive(employee.getActive());
         }
-
         return employeeRepository.save(existing);
     }
 
     @Override
     public Employee getEmployeeById(Long id) {
-        return employeeRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Employee not found"));
+        Employee emp = employeeRepository.findById(id).orElse(null);
+        if (emp == null) {
+            throw new ResourceNotFoundException("Employee not found");
+        }
+        return emp;
     }
 
     @Override
