@@ -25,7 +25,7 @@ public class SkillCategoryServiceImpl implements SkillCategoryService {
                 skillCategoryRepository.findByCategoryName(category.getCategoryName());
 
         if (existing.isPresent()) {
-            return null; // test cases usually expect null or handled in controller
+            return null; 
         }
 
         return skillCategoryRepository.save(category);
