@@ -29,7 +29,6 @@ public class SearchQueryRecord {
             throw new IllegalArgumentException("must not be empty");
         }
 
-        // 🔥 THIS LINE FIXES THE LAST TEST
         if (resultsCount == null) {
             resultsCount = 0;
         }
