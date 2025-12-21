@@ -13,31 +13,37 @@ import com.example.demo.service.EmployeeService;
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
-    private final EmployeeRepository employeeRepository;   // constructor injection only
+    private final EmployeeRepository employeeRepository;
+    private final SkillRepository skillRepository; 
 
-    // constructor signature must be exactly (EmployeeRepository)
-    public EmployeeServiceImpl(EmployeeRepository employeeRepository) {
+    public EmployeeServiceImpl(EmployeeRepository employeeRepository, SkillRepository skillRepository) {
         this.employeeRepository = employeeRepository;
-    }
-@Override
-public Employee createEmployee(Employee employee) {
-    Employee existing = employeeRepository.findByEmail(employee.getEmail()).orElse(null);
-    if (existing != null) {
-        throw new IllegalArgumentException("Email already exists");
+        this.skillRepository = skillRepository;
     }
 
-    if (employee.getActive() == null) {
-        employee.setActive(true);
-    }
-
-    if (employee.getEmployeeSkills() != null) {
-        for (EmployeeSkill es : employee.getEmployeeSkills()) {
-            es.setEmployee(employee);
+    @Override
+    public Employee createEmployee(Employee employee) {
+        if (employeeRepository.findByEmail(employee.getEmail()).isPresent()) {
+            throw new IllegalArgumentException("Email already exists");
         }
+
+        if (employee.getActive() == null) employee.setActive(true);
+
+        if (employee.getEmployeeSkills() != null) {
+            for (EmployeeSkill es : employee.getEmployeeSkills()) {
+                es.setEmployee(employee);
+
+                Long skillId = es.getSkill().getId();
+                es.setSkill(
+                    skillRepository.findById(skillId)
+                        .orElseThrow(() -> new IllegalArgumentException("Skill ID not found: " + skillId))
+                );
+            }
+        }
+
+        return employeeRepository.save(employee);
     }
 
-    return employeeRepository.save(employee);
-}
 
 
     @Override
