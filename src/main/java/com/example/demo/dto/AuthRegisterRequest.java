@@ -2,18 +2,27 @@ package com.example.demo.dto;
 
 public class AuthRegisterRequest {
 
-    private String username;
-    private String password;
+    private String fullName;
     private String email;
+    private String password;
+    private String role; // optional
 
     public AuthRegisterRequest() {}
 
-    public String getUsername() {
-        return username;
+    public String getFullName() {
+        return fullName;
+    }
+    
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public String getEmail() {
+        return email;
+    }
+    
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {
@@ -24,11 +33,11 @@ public class AuthRegisterRequest {
         this.password = password;
     }
 
-    public String getEmail() {
-        return email;
+    public String getRole() {
+        return role;
     }
     
-    public void setEmail(String email) {
-        this.email = email;
+    public void setRole(String role) {
+        this.role = role;
     }
 }
