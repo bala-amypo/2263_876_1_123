@@ -12,8 +12,8 @@ public class EmployeeSkill {
 
    @ManyToOne
    @JoinColumn(name = "employee_id")
-   @JsonIgnore
-   private Employee employee;
+ @JsonIgnore
+   private Employee employee;  
 
    @ManyToOne(cascade = CascadeType.PERSIST)
    @JoinColumn(name = "skill_id", nullable = false)
