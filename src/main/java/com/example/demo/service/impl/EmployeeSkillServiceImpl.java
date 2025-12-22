@@ -19,7 +19,6 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
     private final EmployeeRepository employeeRepository;
     private final SkillRepository skillRepository;
 
-    // ✅ REQUIRED constructor order (testcase dependent)
     public EmployeeSkillServiceImpl(EmployeeSkillRepository employeeSkillRepository,
                                     EmployeeRepository employeeRepository,
                                     SkillRepository skillRepository) {
@@ -39,18 +38,18 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
     @Override
     public EmployeeSkill createEmployeeSkill(EmployeeSkill mapping) {
 
-        // ✅ Experience validation
+        //  Experience validation
         if (mapping.getYearsOfExperience() == null ||
             mapping.getYearsOfExperience() < 0) {
             throw new IllegalArgumentException("Experience years");
         }
 
-        // ✅ Proficiency validation (CRITICAL TEST)
+        //  Proficiency validation 
         if (!isValidProficiency(mapping.getProficiencyLevel())) {
             throw new IllegalArgumentException("Invalid proficiency");
         }
 
-        // ✅ Employee active validation
+        // Employee active validation
         Employee employee = employeeRepository
                 .findById(mapping.getEmployee().getId())
                 .orElseThrow();
@@ -59,7 +58,7 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
             throw new IllegalArgumentException("inactive employee");
         }
 
-        // ✅ Skill active validation
+        // Skill active validation
         Skill skill = skillRepository
                 .findById(mapping.getSkill().getId())
                 .orElseThrow();
