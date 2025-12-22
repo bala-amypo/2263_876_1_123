@@ -41,7 +41,7 @@ public class SkillCategoryController {
     public SkillCategory getCategoryById(@PathVariable Long id) {
 
         SkillCategory cat = ser.getCategoryById(id);
-
+    
         if (cat != null) {
             return cat;
         } else {
