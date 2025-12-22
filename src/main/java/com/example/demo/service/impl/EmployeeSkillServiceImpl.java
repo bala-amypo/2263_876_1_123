@@ -1,5 +1,9 @@
 package com.example.demo.service.impl;
 
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
 import com.example.demo.model.Employee;
 import com.example.demo.model.EmployeeSkill;
 import com.example.demo.model.Skill;
@@ -7,9 +11,6 @@ import com.example.demo.repository.EmployeeRepository;
 import com.example.demo.repository.EmployeeSkillRepository;
 import com.example.demo.repository.SkillRepository;
 import com.example.demo.service.EmployeeSkillService;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class EmployeeSkillServiceImpl implements EmployeeSkillService {
@@ -18,6 +19,7 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
     private final EmployeeRepository employeeRepository;
     private final SkillRepository skillRepository;
 
+    // ✅ REQUIRED constructor (testcase checks this)
     public EmployeeSkillServiceImpl(EmployeeSkillRepository employeeSkillRepository,
                                     EmployeeRepository employeeRepository,
                                     SkillRepository skillRepository) {
@@ -29,7 +31,9 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
     @Override
     public EmployeeSkill createEmployeeSkill(EmployeeSkill mapping) {
 
-        if (mapping.getYearsOfExperience() == null || mapping.getYearsOfExperience() < 0) {
+        // years validation
+        if (mapping.getYearsOfExperience() == null ||
+            mapping.getYearsOfExperience() < 0) {
             throw new IllegalArgumentException("Experience years");
         }
 
@@ -37,17 +41,19 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
             throw new IllegalArgumentException("Invalid proficiency");
         }
 
-        Employee employee = employeeRepository
-                .findById(mapping.getEmployee().getId())
-                .orElseThrow();
+        Employee employee =
+                employeeRepository.findById(
+                        mapping.getEmployee().getId()
+                ).orElseThrow();
 
         if (!Boolean.TRUE.equals(employee.getActive())) {
             throw new IllegalArgumentException("inactive employee");
         }
 
-        Skill skill = skillRepository
-                .findById(mapping.getSkill().getId())
-                .orElseThrow();
+        Skill skill =
+                skillRepository.findById(
+                        mapping.getSkill().getId()
+                ).orElseThrow();
 
         if (!Boolean.TRUE.equals(skill.getActive())) {
             throw new IllegalArgumentException("inactive skill");
@@ -60,9 +66,11 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
     @Override
     public EmployeeSkill updateEmployeeSkill(Long id, EmployeeSkill mapping) {
 
-        EmployeeSkill existing = employeeSkillRepository.findById(id).orElseThrow();
+        EmployeeSkill existing =
+                employeeSkillRepository.findById(id).orElseThrow();
 
-        if (mapping.getYearsOfExperience() == null || mapping.getYearsOfExperience() < 0) {
+        if (mapping.getYearsOfExperience() == null ||
+            mapping.getYearsOfExperience() < 0) {
             throw new IllegalArgumentException("Experience years");
         }
 
@@ -90,8 +98,9 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
 
     @Override
     public void deactivateEmployeeSkill(Long id) {
-        EmployeeSkill employeeSkill = employeeSkillRepository.findById(id).orElseThrow();
-        employeeSkill.setActive(false);
-        employeeSkillRepository.save(employeeSkill);
+        EmployeeSkill es =
+                employeeSkillRepository.findById(id).orElseThrow();
+        es.setActive(false);
+        employeeSkillRepository.save(es);
     }
 }
