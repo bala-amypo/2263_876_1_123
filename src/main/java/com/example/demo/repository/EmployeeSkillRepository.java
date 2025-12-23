@@ -12,9 +12,9 @@ import java.util.List;
 @Repository
 public interface EmployeeSkillRepository extends JpaRepository<EmployeeSkill, Long> {
 
- 
-    @Query("""
-        SELECT es.employee
+  //hql -hibernate query language
+    @Query("""                               
+        SELECT es.employee            
         FROM EmployeeSkill es
         WHERE es.active = true
           AND es.employee.active = true
@@ -22,7 +22,8 @@ public interface EmployeeSkillRepository extends JpaRepository<EmployeeSkill, Lo
           AND es.employee.id <> :userId
         GROUP BY es.employee
         HAVING COUNT(DISTINCT es.skill.name) = :#{#skills.size()}
-    """)
+    """)         
+
     List<Employee> findEmployeesByAllSkillNames(
             @Param("skills") List<String> skills,
             @Param("userId") Long userId
