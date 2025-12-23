@@ -8,10 +8,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class JwtTokenProvider {
 
-    // Dummy in-memory token store for tests
+    // Dummy in-memory token store 
     private static final Map<String, Map<String, Object>> tokenStore = new HashMap<>();
 
-    // REQUIRED by tests
     public String generateToken(Long userId, String email, String role) {
         String token = "dummy-jwt-token-" + userId;
 
@@ -24,7 +23,6 @@ public class JwtTokenProvider {
         return token;
     }
 
-    // Some tests may still call this
     public String generateToken(String email) {
         return generateToken(1L, email, "USER");
     }
@@ -33,17 +31,14 @@ public class JwtTokenProvider {
         return tokenStore.containsKey(token);
     }
 
-    // REQUIRED by tests
     public String getEmailFromToken(String token) {
         return (String) tokenStore.get(token).get("email");
     }
 
-    // REQUIRED by tests
     public Long getUserIdFromToken(String token) {
         return (Long) tokenStore.get(token).get("userId");
     }
 
-    // REQUIRED by tests
     public String getRoleFromToken(String token) {
         return (String) tokenStore.get(token).get("role");
     }
