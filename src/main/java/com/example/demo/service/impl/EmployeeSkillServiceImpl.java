@@ -27,12 +27,18 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
         this.skillRepository = skillRepository;
     }
 
+    // ✅ Validate proficiency level
     private boolean isValidProficiency(String level) {
-        return level != null &&
-               (level.equalsIgnoreCase("Beginner") ||
-                level.equalsIgnoreCase("Intermediate") ||
-                level.equalsIgnoreCase("Advanced") ||
-                level.equalsIgnoreCase("Expert"));
+        if (level == null) return false;
+        switch (level.toLowerCase()) {
+            case "beginner":
+            case "intermediate":
+            case "advanced":
+            case "expert":
+                return true;
+            default:
+                return false;
+        }
     }
 
     @Override
@@ -40,7 +46,7 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
 
         // 1️⃣ Experience validation
         if (mapping.getYearsOfExperience() == null || mapping.getYearsOfExperience() < 0) {
-            throw new IllegalArgumentException("Invalid experience");
+            throw new IllegalArgumentException("Experience cannot be negative");
         }
 
         // 2️⃣ Proficiency validation
@@ -52,73 +58,53 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
         if (mapping.getEmployee() == null || mapping.getEmployee().getId() == null) {
             throw new IllegalArgumentException("Employee required");
         }
-
-        Employee employee = employeeRepository
-                .findById(mapping.getEmployee().getId())
+        Employee employee = employeeRepository.findById(mapping.getEmployee().getId())
                 .orElseThrow(() -> new IllegalArgumentException("Employee not found"));
-
-        if (employee.getActive() == null || !employee.getActive()) {
-            throw new IllegalArgumentException("Inactive employee");
+        if (Boolean.FALSE.equals(employee.getActive())) {
+            throw new IllegalArgumentException("Cannot assign skill to inactive employee");
         }
 
         // 4️⃣ Skill validation
         if (mapping.getSkill() == null || mapping.getSkill().getId() == null) {
             throw new IllegalArgumentException("Skill required");
         }
-
-        Skill skill = skillRepository
-                .findById(mapping.getSkill().getId())
+        Skill skill = skillRepository.findById(mapping.getSkill().getId())
                 .orElseThrow(() -> new IllegalArgumentException("Skill not found"));
-
-        if (skill.getActive() == null || !skill.getActive()) {
-            throw new IllegalArgumentException("Inactive skill");
+        if (Boolean.FALSE.equals(skill.getActive())) {
+            throw new IllegalArgumentException("Cannot assign inactive skill");
         }
 
+        // 5️⃣ Set active flag and save
         mapping.setActive(true);
         return employeeSkillRepository.save(mapping);
     }
 
     @Override
     public EmployeeSkill updateEmployeeSkill(Long id, EmployeeSkill mapping) {
+        EmployeeSkill existing = employeeSkillRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("EmployeeSkill not found"));
 
-        EmployeeSkill existing =
-                employeeSkillRepository.findById(id)
-                        .orElseThrow(() -> new IllegalArgumentException("EmployeeSkill not found"));
-
+        // Validate updated data
         if (mapping.getYearsOfExperience() == null || mapping.getYearsOfExperience() < 0) {
-            throw new IllegalArgumentException("Invalid experience");
+            throw new IllegalArgumentException("Experience cannot be negative");
         }
-
         if (!isValidProficiency(mapping.getProficiencyLevel())) {
             throw new IllegalArgumentException("Invalid proficiency");
         }
 
-        // Employee validation for update
-        if (mapping.getEmployee() == null || mapping.getEmployee().getId() == null) {
-            throw new IllegalArgumentException("Employee required");
-        }
-
-        Employee employee = employeeRepository
-                .findById(mapping.getEmployee().getId())
+        Employee employee = employeeRepository.findById(mapping.getEmployee().getId())
                 .orElseThrow(() -> new IllegalArgumentException("Employee not found"));
-
-        if (employee.getActive() == null || !employee.getActive()) {
-            throw new IllegalArgumentException("Inactive employee");
+        if (Boolean.FALSE.equals(employee.getActive())) {
+            throw new IllegalArgumentException("Cannot assign skill to inactive employee");
         }
 
-        // Skill validation for update
-        if (mapping.getSkill() == null || mapping.getSkill().getId() == null) {
-            throw new IllegalArgumentException("Skill required");
-        }
-
-        Skill skill = skillRepository
-                .findById(mapping.getSkill().getId())
+        Skill skill = skillRepository.findById(mapping.getSkill().getId())
                 .orElseThrow(() -> new IllegalArgumentException("Skill not found"));
-
-        if (skill.getActive() == null || !skill.getActive()) {
-            throw new IllegalArgumentException("Inactive skill");
+        if (Boolean.FALSE.equals(skill.getActive())) {
+            throw new IllegalArgumentException("Cannot assign inactive skill");
         }
 
+        // Update fields
         existing.setEmployee(employee);
         existing.setSkill(skill);
         existing.setProficiencyLevel(mapping.getProficiencyLevel());
@@ -140,9 +126,8 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
 
     @Override
     public void deactivateEmployeeSkill(Long id) {
-        EmployeeSkill es =
-                employeeSkillRepository.findById(id)
-                        .orElseThrow(() -> new IllegalArgumentException("EmployeeSkill not found"));
+        EmployeeSkill es = employeeSkillRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("EmployeeSkill not found"));
         es.setActive(false);
         employeeSkillRepository.save(es);
     }
