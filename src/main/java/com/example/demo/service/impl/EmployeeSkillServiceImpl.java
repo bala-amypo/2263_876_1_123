@@ -38,23 +38,22 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
     @Override
 public EmployeeSkill createEmployeeSkill(EmployeeSkill mapping) {
 
-    // 1️⃣ Employee must be present
-    if (mapping.getEmployee() == null || mapping.getEmployee().getId() == null) {
-        throw new IllegalArgumentException("Employee is required");
-    }
-
-    // 2️⃣ Experience validation
+    // 1️⃣ Experience validation (MUST BE FIRST)
     if (mapping.getYearsOfExperience() == null ||
         mapping.getYearsOfExperience() < 0) {
-        throw new IllegalArgumentException("Invalid experience years");
+        throw new IllegalArgumentException("Invalid experience");
     }
 
-    // 3️⃣ Proficiency validation
+    // 2️⃣ Proficiency validation
     if (!isValidProficiency(mapping.getProficiencyLevel())) {
         throw new IllegalArgumentException("Invalid proficiency");
     }
 
-    // 4️⃣ Employee active validation
+    // 3️⃣ Employee validation
+    if (mapping.getEmployee() == null || mapping.getEmployee().getId() == null) {
+        throw new IllegalArgumentException("Employee required");
+    }
+
     Employee employee = employeeRepository
             .findById(mapping.getEmployee().getId())
             .orElseThrow(() -> new IllegalArgumentException("Employee not found"));
@@ -63,9 +62,9 @@ public EmployeeSkill createEmployeeSkill(EmployeeSkill mapping) {
         throw new IllegalArgumentException("Inactive employee");
     }
 
-    // 5️⃣ Skill active validation
+    // 4️⃣ Skill validation
     if (mapping.getSkill() == null || mapping.getSkill().getId() == null) {
-        throw new IllegalArgumentException("Skill is required");
+        throw new IllegalArgumentException("Skill required");
     }
 
     Skill skill = skillRepository
@@ -79,6 +78,7 @@ public EmployeeSkill createEmployeeSkill(EmployeeSkill mapping) {
     mapping.setActive(true);
     return employeeSkillRepository.save(mapping);
 }
+
 
 
     @Override
