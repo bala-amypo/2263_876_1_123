@@ -28,45 +28,49 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
     }
 
     private boolean isValidProficiency(String level) {
-        return level != null &&
-               (level.equalsIgnoreCase("Beginner") ||
-                level.equalsIgnoreCase("Intermediate") ||
-                level.equalsIgnoreCase("Advanced") ||
-                level.equalsIgnoreCase("Expert"));
+        if (level == null) return false;
+        switch (level.toLowerCase()) {
+            case "beginner":
+            case "intermediate":
+            case "advanced":
+            case "expert":
+                return true;
+            default:
+                return false;
+        }
     }
 
     @Override
     public EmployeeSkill createEmployeeSkill(EmployeeSkill mapping) {
-        // 1️⃣ Experience validation
         if (mapping.getYearsOfExperience() == null || mapping.getYearsOfExperience() < 0) {
-            throw new IllegalArgumentException("Years of experience cannot be negative");
+            throw new IllegalArgumentException("Years of experience must be non-negative");
         }
 
-        // 2️⃣ Proficiency validation
         if (!isValidProficiency(mapping.getProficiencyLevel())) {
-            throw new IllegalArgumentException("Invalid proficiency level");
+            throw new IllegalArgumentException("Invalid proficiency");
         }
 
-        // 3️⃣ Employee validation
-        Employee employee = employeeRepository
-                .findById(mapping.getEmployee().getId())
+        if (mapping.getEmployee() == null || mapping.getEmployee().getId() == null) {
+            throw new IllegalArgumentException("Employee is required");
+        }
+        Employee employee = employeeRepository.findById(mapping.getEmployee().getId())
                 .orElseThrow(() -> new IllegalArgumentException("Employee not found"));
+
         if (!Boolean.TRUE.equals(employee.getActive())) {
-            throw new IllegalArgumentException("Inactive employee");
+            throw new IllegalArgumentException("Cannot assign skill to inactive employee");
         }
 
-        // 4️⃣ Skill validation
-        Skill skill = skillRepository
-                .findById(mapping.getSkill().getId())
+        if (mapping.getSkill() == null || mapping.getSkill().getId() == null) {
+            throw new IllegalArgumentException("Skill is required");
+        }
+        Skill skill = skillRepository.findById(mapping.getSkill().getId())
                 .orElseThrow(() -> new IllegalArgumentException("Skill not found"));
+
         if (!Boolean.TRUE.equals(skill.getActive())) {
-            throw new IllegalArgumentException("Inactive skill");
+            throw new IllegalArgumentException("Cannot assign inactive skill");
         }
 
-        mapping.setEmployee(employee);
-        mapping.setSkill(skill);
         mapping.setActive(true);
-
         return employeeSkillRepository.save(mapping);
     }
 
@@ -76,25 +80,23 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
                 .orElseThrow(() -> new IllegalArgumentException("EmployeeSkill not found"));
 
         if (mapping.getYearsOfExperience() == null || mapping.getYearsOfExperience() < 0) {
-            throw new IllegalArgumentException("Years of experience cannot be negative");
+            throw new IllegalArgumentException("Years of experience must be non-negative");
         }
 
         if (!isValidProficiency(mapping.getProficiencyLevel())) {
-            throw new IllegalArgumentException("Invalid proficiency level");
+            throw new IllegalArgumentException("Invalid proficiency");
         }
 
-        Employee employee = employeeRepository
-                .findById(mapping.getEmployee().getId())
+        Employee employee = employeeRepository.findById(mapping.getEmployee().getId())
                 .orElseThrow(() -> new IllegalArgumentException("Employee not found"));
         if (!Boolean.TRUE.equals(employee.getActive())) {
-            throw new IllegalArgumentException("Inactive employee");
+            throw new IllegalArgumentException("Cannot assign skill to inactive employee");
         }
 
-        Skill skill = skillRepository
-                .findById(mapping.getSkill().getId())
+        Skill skill = skillRepository.findById(mapping.getSkill().getId())
                 .orElseThrow(() -> new IllegalArgumentException("Skill not found"));
         if (!Boolean.TRUE.equals(skill.getActive())) {
-            throw new IllegalArgumentException("Inactive skill");
+            throw new IllegalArgumentException("Cannot assign inactive skill");
         }
 
         existing.setEmployee(employee);
