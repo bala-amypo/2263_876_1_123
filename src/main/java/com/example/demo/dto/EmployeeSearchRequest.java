@@ -3,7 +3,7 @@ package com.example.demo.dto;
 import java.util.List;
 
 public class EmployeeSearchRequest {
-
+    
     private Long userId;
     private List<String> skills;
 
