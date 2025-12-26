@@ -17,3 +17,4 @@ public class SwaggerConfig {
                         new Server().url("https://9153.32procr.amypo.ai/")
                 ));
         }
+}
