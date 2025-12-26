@@ -20,6 +20,7 @@ public class EmployeeController {
     }
 
     @PostMapping
+    @PreAuthorize
     public Employee createEmployee(@RequestBody Employee employee) {
         return ser.createEmployee(employee);
     }
