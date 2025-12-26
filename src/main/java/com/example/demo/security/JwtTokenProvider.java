@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class JwtTokenProvider {
 
-    // Dummy in-memory token store 
+    
     private static final Map<String, Map<String, Object>> tokenStore = new HashMap<>();
 
     public String generateToken(Long userId, String email, String role) {
