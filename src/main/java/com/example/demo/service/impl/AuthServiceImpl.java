@@ -10,7 +10,7 @@ import com.example.demo.security.JwtTokenProvider;
 import com.example.demo.service.AuthService;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class AuthServiceImpl implements AuthService {
 
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
