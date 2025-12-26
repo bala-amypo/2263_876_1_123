@@ -1,54 +1,55 @@
 package com.example.demo.security;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Date;
+
+import javax.crypto.SecretKey;
 
 import org.springframework.stereotype.Component;
+
+import io.jsonwebtoken.*;
+import io.jsonwebtoken.security.Keys;
 
 @Component
 public class JwtTokenProvider {
 
-    
-    private static final Map<String, Map<String, Object>> tokenStore = new HashMap<>();
+    private static final String SECRET =
+            "very_secure_secret_key_which_must_be_256_bits_long_for_jwt";
+
+    private final SecretKey key =
+            Keys.hmacShaKeyFor(SECRET.getBytes());
 
     public String generateToken(Long userId, String email, String role) {
-        String token = "dummy-jwt-token-" + userId;
 
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("userId", userId);
-        claims.put("email", email);
-        claims.put("role", role);
-
-        tokenStore.put(token, claims);
-        return token;
-    }
-
-    public String generateToken(String email) {
-        return generateToken(1L, email, "USER");
-    }
-
-    public boolean validateToken(String token) {
-        return tokenStore.containsKey(token);
+        return Jwts.builder()
+                .setSubject(email)
+                .claim("userId", userId)
+                .claim("role", role)
+                .setIssuedAt(new Date())
+                .setExpiration(
+                        new Date(System.currentTimeMillis() + 60 * 60 * 1000)
+                )
+                .signWith(key, SignatureAlgorithm.HS256)
+                .compact();
     }
 
     public String getEmailFromToken(String token) {
-        return (String) tokenStore.get(token).get("email");
+        return Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject();
     }
 
-    public Long getUserIdFromToken(String token) {
-        return (Long) tokenStore.get(token).get("userId");
-    }
-
-    public String getRoleFromToken(String token) {
-        return (String) tokenStore.get(token).get("role");
-    }
-
-    public Map<String, Object> getClaims(String token) {
-        return tokenStore.get(token);
-    }
-
-    // Backward compatibility
-    public String getUsernameFromToken(String token) {
-        return getEmailFromToken(token);
+    public boolean validateToken(String token) {
+        try {
+            Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token);
+            return true;
+        } catch (JwtException e) {
+            return false;
+        }
     }
 }

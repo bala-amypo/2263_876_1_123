@@ -1,41 +1,39 @@
-// package com.example.demo.security;
+package com.example.demo.security;
 
-// import java.util.Date;
-// import io.jsonwebtoken.*;
-// import io.jsonwebtoken.security.Keys;
+import java.util.List;
 
-// import javax.crypto.SecretKey;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.*;
+import org.springframework.stereotype.Service;
 
-// import org.springframework.stereotype.Component;
+import com.example.demo.model.User;
+import com.example.demo.repository.UserRepository;
 
-// @Component
-// public class JwtUtil {
+@Service
+public class CustomUserDetailsService
+        implements UserDetailsService {
 
-//     // Must be at least 256 bits for HS256
-//     private static final String SECRET =
-//         "sdjhgbwubwwbgwiub8QFQ8qg87G1bfewifbiuwg7iu8wefqhjk";
+    @Autowired
+    private UserRepository userRepository;
 
-//     private final SecretKey key =
-//         Keys.hmacShaKeyFor(SECRET.getBytes());
+    @Override
+    public UserDetails loadUserByUsername(String email)
+            throws UsernameNotFoundException {
 
-//     public String generateToken(String email, String role) {
-//         return Jwts.builder()
-//                 .setSubject(email)
-//                 .claim("role", role)
-//                 .setIssuedAt(new Date())
-//                 .setExpiration(
-//                     new Date(System.currentTimeMillis() + 10 * 60 * 1000)
-//                 )
-//                 .signWith(key, SignatureAlgorithm.HS256)
-//                 .compact();
-//     }
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() ->
+                        new UsernameNotFoundException("User not found"));
 
-//     public String extractEmail(String token) {
-//         return Jwts.parserBuilder()
-//                 .setSigningKey(key)
-//                 .build()
-//                 .parseClaimsJws(token)
-//                 .getBody()
-//                 .getSubject();
-//     }
-// }
+        return new org.springframework.security.core.userdetails.User(
+                user.getEmail(),
+                user.getPassword(),
+                List.of(
+                        new SimpleGrantedAuthority(
+                                "ROLE_" + user.getRole()
+                        )
+                )
+        );
+    }
+}
+
