@@ -30,13 +30,13 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/auth/**").permitAll()
+                .requestMatchers("/auth/**").permitAll() // login/register
                 .requestMatchers(
                     "/hello-servlet",
                     "/swagger-ui/**",
                     "/v3/api-docs/**"
                 ).permitAll()
-                .anyRequest().permitAll()   
+                .anyRequest().authenticated()   // 🔐 JWT REQUIRED
             )
             .addFilterBefore(
                 jwtAuthenticationFilter,
