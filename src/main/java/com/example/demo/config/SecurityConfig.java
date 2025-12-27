@@ -29,14 +29,22 @@ public class SecurityConfig {
 
         http
             .csrf(csrf -> csrf.disable())
+            .sessionManagement(session ->
+                session.sessionCreationPolicy(
+                    SessionCreationPolicy.STATELESS
+                )
+            )
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/auth/**").permitAll() // login/register
+                // public endpoints
+                .requestMatchers("/auth/**").permitAll()
                 .requestMatchers(
                     "/hello-servlet",
                     "/swagger-ui/**",
                     "/v3/api-docs/**"
                 ).permitAll()
-                .anyRequest().authenticated()   // 🔐 JWT REQUIRED
+
+                // 🔴 IMPORTANT
+                .anyRequest().authenticated()
             )
             .addFilterBefore(
                 jwtAuthenticationFilter,
@@ -46,3 +54,4 @@ public class SecurityConfig {
         return http.build();
     }
 }
+
