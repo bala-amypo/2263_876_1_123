@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -35,15 +36,12 @@ public class SecurityConfig {
                 )
             )
             .authorizeHttpRequests(auth -> auth
-                // public endpoints
                 .requestMatchers("/auth/**").permitAll()
                 .requestMatchers(
                     "/hello-servlet",
                     "/swagger-ui/**",
                     "/v3/api-docs/**"
                 ).permitAll()
-
-                // 🔴 IMPORTANT
                 .anyRequest().authenticated()
             )
             .addFilterBefore(
@@ -54,4 +52,3 @@ public class SecurityConfig {
         return http.build();
     }
 }
-
