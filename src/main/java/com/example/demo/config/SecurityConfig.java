@@ -13,7 +13,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import com.example.demo.security.JwtAuthenticationFilter;
 
 @Configuration
-@EnableMethodSecurity
+@EnableMethodSecurity   // ok, but we won't use roles
 public class SecurityConfig {
 
     @Autowired
@@ -31,9 +31,7 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable())
             .sessionManagement(session ->
-                session.sessionCreationPolicy(
-                    SessionCreationPolicy.STATELESS
-                )
+                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/auth/**").permitAll()
@@ -42,7 +40,7 @@ public class SecurityConfig {
                     "/swagger-ui/**",
                     "/v3/api-docs/**"
                 ).permitAll()
-                .anyRequest().authenticated()
+                .anyRequest().authenticated()   // ⭐ THIS LINE IS THE KEY
             )
             .addFilterBefore(
                 jwtAuthenticationFilter,
