@@ -23,7 +23,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired
     private CustomUserDetailsService userDetailsService;
-    
+
     @Override
     protected void doFilterInternal(
             HttpServletRequest request,
@@ -33,48 +33,45 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String authHeader = request.getHeader("Authorization");
 
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+        String token = null;
+        String email = null;
 
-            String token = authHeader.substring(7);
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            token = authHeader.substring(7);
 
             if (jwtTokenProvider.validateToken(token)) {
+                email = jwtTokenProvider.getEmailFromToken(token);
+            }
+        }
 
-                String email = jwtTokenProvider.getEmailFromToken(token);
+        if (email != null &&
+            SecurityContextHolder.getContext().getAuthentication() == null) {
 
-                if (email != null &&
-                    SecurityContextHolder.getContext().getAuthentication() == null) {
+            try {
+                UserDetails userDetails =
+                        userDetailsService.loadUserByUsername(email);
 
-                    UserDetails userDetails =
-                            userDetailsService.loadUserByUsername(email);
+                UsernamePasswordAuthenticationToken authentication =
+                        new UsernamePasswordAuthenticationToken(
+                                userDetails,
+                                null,
+                                userDetails.getAuthorities()
+                        );
 
-                    UsernamePasswordAuthenticationToken authentication =
-                            new UsernamePasswordAuthenticationToken(
-                                    userDetails,
-                                    null,
-                                    userDetails.getAuthorities()
-                            );
+                authentication.setDetails(
+                        new WebAuthenticationDetailsSource()
+                                .buildDetails(request)
+                );
 
-                    authentication.setDetails(
-                            new WebAuthenticationDetailsSource()
-                                    .buildDetails(request)
-                    );
+                SecurityContextHolder.getContext()
+                        .setAuthentication(authentication);
 
-                    authentication.setAuthenticated(true); // 🔥 VERY IMPORTANT
-
-                    SecurityContextHolder.getContext()
-                            .setAuthentication(authentication);
-                }
+            } catch (Exception ex) {
+                // Prevent 500 errors
+                SecurityContextHolder.clearContext();
             }
         }
 
         filterChain.doFilter(request, response);
     }
-    @Override
-protected boolean shouldNotFilter(HttpServletRequest request) {
-    String path = request.getRequestURI();
-    return path.startsWith("/auth/")
-        || path.startsWith("/swagger-ui")
-        || path.startsWith("/v3/api-docs");
-}
-
 }
