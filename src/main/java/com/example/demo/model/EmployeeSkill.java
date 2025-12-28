@@ -19,7 +19,7 @@ public class EmployeeSkill {
    @JoinColumn(name = "skill_id", nullable = false)
    private Skill skill;
 
-    // MUST be String (tests expect String, not enum)
+   
     @Column(nullable = false)
     private String proficiencyLevel;
 
