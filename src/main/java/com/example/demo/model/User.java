@@ -14,7 +14,6 @@ public class User {
 
     private String password;
 
-    // ROLE will be STRING (ADMIN / USER)
     private String role;
 
     public User() {}
