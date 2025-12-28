@@ -33,42 +33,37 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String authHeader = request.getHeader("Authorization");
 
-        String token = null;
-        String email = null;
-
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            token = authHeader.substring(7);
+
+            String token = authHeader.substring(7);
 
             if (jwtTokenProvider.validateToken(token)) {
-                email = jwtTokenProvider.getEmailFromToken(token);
-            }
-        }
 
-        if (email != null &&
-            SecurityContextHolder.getContext().getAuthentication() == null) {
+                String email = jwtTokenProvider.getEmailFromToken(token);
 
-            try {
-                UserDetails userDetails =
-                        userDetailsService.loadUserByUsername(email);
+                if (email != null &&
+                    SecurityContextHolder.getContext().getAuthentication() == null) {
 
-                UsernamePasswordAuthenticationToken authentication =
-                        new UsernamePasswordAuthenticationToken(
-                                userDetails,
-                                null,
-                                userDetails.getAuthorities()
-                        );
+                    UserDetails userDetails =
+                            userDetailsService.loadUserByUsername(email);
 
-                authentication.setDetails(
-                        new WebAuthenticationDetailsSource()
-                                .buildDetails(request)
-                );
+                    UsernamePasswordAuthenticationToken authentication =
+                            new UsernamePasswordAuthenticationToken(
+                                    userDetails,
+                                    null,
+                                    userDetails.getAuthorities()
+                            );
 
-                SecurityContextHolder.getContext()
-                        .setAuthentication(authentication);
+                    authentication.setDetails(
+                            new WebAuthenticationDetailsSource()
+                                    .buildDetails(request)
+                    );
 
-            } catch (Exception ex) {
-                // Prevent 500 errors
-                SecurityContextHolder.clearContext();
+                    authentication.setAuthenticated(true); // 🔥 VERY IMPORTANT
+
+                    SecurityContextHolder.getContext()
+                            .setAuthentication(authentication);
+                }
             }
         }
 
