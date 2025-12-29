@@ -12,12 +12,14 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 @ExceptionHandler(ResourceNotFoundException.class)
+
 public ResponseEntity<String>handleNotFound(ResourceNotFoundException ex) {
-return new ResponseEntity<>(ex.getMessage(),HttpStatus.NOT_FOUND);
+       return new ResponseEntity<>(ex.getMessage(),HttpStatus.NOT_FOUND);
 }
 @ExceptionHandler(MethodArgumentNotValidException.class)
+
 public ResponseEntity<Map<String, String>>
-handleValidationErrors(MethodArgumentNotValidException ex) {
+ handleValidationErrors(MethodArgumentNotValidException ex) {
 Map<String, String> errors = new HashMap<>();
 ex.getBindingResult().getFieldErrors().forEach(error ->
 errors.put(error.getField(),
