@@ -20,7 +20,7 @@ public class EmployeeController {
     }
 
     @PostMapping
-    
+    @PreAuthorize("hasRole('ADMIN')")
     public Employee createEmployee(@RequestBody Employee employee) {
         return ser.createEmployee(employee);
     }
