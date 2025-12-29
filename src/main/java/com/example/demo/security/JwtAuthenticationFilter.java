@@ -59,12 +59,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                         );
 
                 authentication.setDetails(
-                        new WebAuthenticationDetailsSource()
+                        new WebAuthenticationDetailsSource()       //ip address
                                 .buildDetails(request)
                 );
 
                 SecurityContextHolder.getContext()
-                        .setAuthentication(authentication);
+                        .setAuthentication(authentication);        //enables preauthorize
 
             } catch (Exception ex) {
                 // Prevent 500 errors
